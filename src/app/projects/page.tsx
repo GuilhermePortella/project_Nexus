@@ -69,20 +69,20 @@ export default function ProjectsPage() {
     <main className="mx-auto max-w-6xl p-6 space-y-12">
       <header className="space-y-4 text-center">
         <h1 className="text-4xl font-bold">Projetos no GitHub 🚀</h1>
-        <p className="text-neutral-600">
+        <p className="text-neutral-10">
           Todos os repositórios públicos do meu GitHub são listados
           automaticamente abaixo. Você pode navegar entre páginas.
         </p>
       </header>
 
       {loading && (
-        <p className="text-center text-neutral-500 animate-pulse">
+        <p className="text-center text-neutral-10 animate-pulse">
           Carregando projetos...
         </p>
       )}
 
       {error && (
-        <p className="text-center text-red-500">
+        <p className="text-center text-red-10">
           Erro ao carregar projetos do GitHub.
         </p>
       )}
@@ -95,7 +95,7 @@ export default function ProjectsPage() {
                 key={repo.id}
                 className="border rounded-lg p-5 hover:bg-neutral-50 transition-colors"
               >
-                <h3 className="text-lg font-semibold text-blue-700 mb-2">
+                <h3 className="text-lg font-semibold text-blue-10 mb-2">
                   {repo.name}
                 </h3>
                 <p className="text-sm text-neutral-600 line-clamp-3 mb-3">
