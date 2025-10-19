@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// Links do seu site pessoal (ajuste conforme for adicionando novas páginas)
+// Links principais do site
 const LINKS = [
   { href: "/", label: "Início" },
   { href: "/projects", label: "Projetos" },
   { href: "/articles", label: "Artigos" },
   { href: "/about", label: "Sobre" },
-  { href: "https://github.com/GuilhermePortella", label: "GitHub", external: true },
+  { href: "/contacts", label: "Contatos" },
 ];
 
 export default function SiteNav() {
@@ -18,32 +18,17 @@ export default function SiteNav() {
   return (
     <nav className="site-nav sticky-top" aria-label="Primary">
       <div className="container inner">
-        {/* Marca (pode virar logo futuramente) */}
+        {/* Marca (nome ou logo futuramente) */}
         <Link className="site-brand" href="/">
           Guilherme Portella
         </Link>
 
-        {/* Links principais */}
+        {/* Navegação principal */}
         <ul className="site-links" role="list">
-          {LINKS.map(({ href, label, external }) => {
+          {LINKS.map(({ href, label }) => {
             const clean = href.replace(/\/+$/, "");
             const active =
               pathname === clean || (clean !== "/" && pathname.startsWith(clean));
-
-            if (external) {
-              return (
-                <li key={href}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={active ? "active" : undefined}
-                  >
-                    {label}
-                  </a>
-                </li>
-              );
-            }
 
             return (
               <li key={href}>
