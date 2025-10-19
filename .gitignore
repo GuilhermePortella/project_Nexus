@@ -39,3 +39,138 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ==============================
+# Node / Next.js / TypeScript
+# ==============================
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# next.js build output
+/.next
+/out
+# Turbopack artifacts
+.turbo
+# static export
+/export
+
+# production
+/build
+/dist
+
+# typescript
+*.tsbuildinfo
+
+# env files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# ==============================
+# Logs and debug
+# ==============================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.vscode/.react
+
+# Editor / IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# ==============================
+# OS / misc files
+# ==============================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini
+
+# ==============================
+# Test / Coverage
+# ==============================
+coverage
+*.lcov
+.nyc_output
+jest-cache/
+jest-html-reporters-*.html
+jest-stare/
+
+# ==============================
+# Local cache / temp files
+# ==============================
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.old
+*.orig
+*.rej
+
+# ==============================
+# Build tools / frameworks
+# ==============================
+.cache
+.next-turbo
+.turbo
+.vercel
+.eslintcache
+stylelintcache
+postcss-cache/
+.cache-loader/
+.npm/
+node_modules/.cache/
+
+# ==============================
+# Design / documentation
+# ==============================
+*.psd
+*.ai
+*.sketch
+*.xcf
+*.png~
+*.jpg~
+*.jpeg~
+*.bak
+
+# ==============================
+# Local environment overrides
+# ==============================
+.envrc
+direnv
+*.local
+
+# ==============================
+# Lock / system-specific
+# ==============================
+package-lock.json
+yarn.lock
+.pnpm-store
+.pnpm-debug.log
+
+# ==============================
+# Tailwind / build metadata
+# ==============================
+tailwind.output.css
+tailwind.css.map
+
+# ==============================
+# MacOS / Windows junk
+# ==============================
+.Trashes
+.AppleDouble
+.LSOverride

@@ -1,103 +1,86 @@
-import Image from "next/image";
+// src/app/page.tsx
+import Link from "next/link";
+import { getAllArticles } from "@/lib/articles";
 
-export default function Home() {
+export default async function Home() {
+  const recentArticles = await getAllArticles(3);
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="mx-auto max-w-5xl p-6 space-y-10">
+      <header className="space-y-3">
+        <h1 className="text-4xl font-bold">Guilherme Portella</h1>
+        <p className="text-lg text-neutral-600">
+          Backend Engineer (Java/Spring), arquitetura de sistemas, microsserviços e Cloud (AWS/Azure).
+        </p>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Texto principal irreverente */}
+      <section className="space-y-4 text-neutral-800">
+        <p>
+          Eu gosto de código limpo, arquitetura sólida e sistemas que não implodem na virada do mês. 
+          Mas sejamos honestos: todo dev já fez um quick and dirty que virou permanente. 
+          A diferença é admitir e documentar a desgraça.
+        </p>
+
+        <p>
+          Meu trabalho gira em torno de <strong>Java</strong> e <strong>Spring Boot</strong>, 
+          e não — não é porque gosto de verbos como “Factory” ou “Manager” no nome da classe. 
+          É porque sistemas bancários não perdoam má arquitetura, e é ali que a brincadeira acaba. 
+          Já vi monólitos tentando fingir que são microserviços, e microserviços tentando voltar a ser monólitos. 
+          Spoiler: nenhum dos dois estava feliz.
+        </p>
+
+        <p>
+          Não sou do time que acha que o framework vai salvar o projeto. 
+          Nem daquele que chama de “arquitetura limpa” um código que precisa de GPS pra entender o fluxo. 
+          Prefiro a escola do “funciona, mas com propósito”: cada abstração tem que pagar o próprio aluguel.
+        </p>
+
+        <p>
+          Eu acredito que <strong>boa engenharia</strong> nasce do atrito entre o ideal técnico e o caos da vida real. 
+          E que liderança técnica é, na prática, a arte de dizer “não” com didática. 
+          Às vezes o melhor refactor é só um bom README explicando porque <em>não</em> mexer.
+        </p>
+
+        <p>
+          Se quiser a versão mais formal, 
+          passa no <Link href="/about" className="text-blue-700 hover:underline">Sobre</Link>. 
+          Se quiser ver como eu penso, é só continuar lendo os artigos abaixo. 👇
+        </p>
+      </section>
+
+      {/* Artigos recentes */}
+      <section className="space-y-6">
+        <div className="flex justify-between items-center border-b pb-3">
+          <h2 className="text-2xl font-bold">Artigos Recentes</h2>
+          <Link href="/articles/" className="text-sm text-blue-700 hover:underline">
+            Ver todos &rarr;
+          </Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {recentArticles.length === 0 ? (
+            <p className="text-sm text-neutral-500">Nenhum artigo publicado ainda.</p>
+          ) : (
+            recentArticles.map((article) => (
+              <Link
+                key={article.slug}
+                href={`/articles/${article.slug}/`}
+                className="block p-5 border rounded-lg hover:bg-neutral-50 transition-colors"
+              >
+                <h3 className="text-lg font-semibold text-blue-700 mb-2">
+                  {article.frontmatter.title}
+                </h3>
+                {article.frontmatter.summary && (
+                  <p className="text-sm text-neutral-600">
+                    {article.frontmatter.summary}
+                  </p>
+                )}
+              </Link>
+            ))
+          )}
+        </div>
+      </section>
+    </main>
   );
 }
