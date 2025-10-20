@@ -1,12 +1,13 @@
 // src/app/about/page.tsx
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AboutPage() {
   return (
     <main className="mx-auto max-w-3xl p-6 space-y-10">
       <header className="space-y-2 text-center">
-        <h1 className="text-4xl font-bold text-neutral-900">Sobre</h1>
-        <p className="text-neutral-600 text-lg">
+        <h1 className="text-4xl font-bold">Sobre</h1>
+        <p className="text-lg text-neutral-600">
           Engenheiro de Software especializado em arquitetura backend, sistemas bancários e modernização de plataformas legadas.
         </p>
       </header>
@@ -17,7 +18,7 @@ export default function AboutPage() {
           alt="Foto de Guilherme Portella"
           width={250}
           height={250}
-          className="rounded-full shadow-md object-cover"
+          className="rounded-full shadow-md object-cover ring-1 ring-neutral-800"
           priority
         />
       </div>
@@ -62,6 +63,33 @@ export default function AboutPage() {
           <strong> estratégias de migração</strong>, <strong>liderança de times</strong> e <strong>desenho de ecossistemas distribuídos</strong> — sem perder a conexão com
           padrões de código, boas práticas e fundamentos que sustentam a engenharia de longo prazo.
         </p>
+      </section>
+
+      {/* 👇 Nova seção: Contatos */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">Contatos</h2>
+        <ul className="space-y-2">
+          <li>
+            <Link href="mailto:guilherme@guilhermeportella.com.br" className="hover:underline">
+              ✉️ E-mail profissional
+            </Link>
+          </li>
+          <li>
+            <Link href="https://www.linkedin.com/in/guilherme-portella/" target="_blank" className="hover:underline">
+              💼 LinkedIn
+            </Link>
+          </li>
+          <li>
+            <Link href="https://github.com/GuilhermePortella" target="_blank" className="hover:underline">
+              🧠 GitHub
+            </Link>
+          </li>
+          <li>
+            <Link href="https://x.com/guilhermepcodes" target="_blank" className="hover:underline">
+              🐦 X (Twitter)
+            </Link>
+          </li>
+        </ul>
       </section>
     </main>
   );

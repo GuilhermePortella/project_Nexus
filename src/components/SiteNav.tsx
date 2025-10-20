@@ -9,7 +9,7 @@ const LINKS = [
   { href: "/projects", label: "Projetos" },
   { href: "/articles", label: "Artigos" },
   { href: "/about", label: "Sobre" },
-  { href: "/contacts", label: "Contatos" },
+  { href: "/curiosidades", label: "Curisosidades" },
 ];
 
 export default function SiteNav() {

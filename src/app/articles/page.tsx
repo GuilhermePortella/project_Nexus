@@ -1,5 +1,8 @@
+// src/app/articles/page.tsx
 import Link from "next/link";
 import ArticlesSearch from "./ArticlesSearch";
+import YearMonthFilter from "./YearMonthFilter";
+import ArticlesByYearList from "./ArticlesByYearList";
 import { getAllArticles, buildSearchIndex, type ArticleIndexItem } from "@/lib/articles";
 
 export const metadata = {
@@ -25,7 +28,7 @@ function groupByMonth(items: ArticleIndexItem[]) {
     const year = d.getFullYear();
     const month = d.getMonth();
     const id = `${year}-${String(month + 1).padStart(2, "0")}`;
-    const label = `${year} - ${monthTitle(d)}`;
+    const label = d.getTime() === 0 ? "Sem data" : `${year} - ${monthTitle(d)}`;
     const g = groups.get(id) ?? { key: { year, month }, label, id, items: [] };
     g.items.push(a);
     groups.set(id, g);
@@ -46,57 +49,21 @@ export default async function ArticlesPage() {
       <header className="space-y-1">
         <h1 className="text-4xl font-bold text-neutral-900">Guilherme Portella’s Blog</h1>
         <p className="text-neutral-600">
-          Diretão: posts agrupados por mês e uma busca que encontra título, resumo e conteúdo dos artigos.
+          Diretão: posts filtrados por ano e agrupados por mês, com busca por título, resumo e conteúdo.
         </p>
       </header>
 
       {/* Busca (client) */}
       <ArticlesSearch index={searchIndex} />
 
-      {/* Índice de meses */}
-      {grouped.length > 0 && (
-        <nav className="text-sm text-neutral-600">
-          <span className="mr-2">Meses:</span>
-          <ul className="inline-flex flex-wrap gap-x-3 gap-y-2">
-            {grouped.map((g) => (
-              <li key={g.id}>
-                <a href={`#${g.id}`} className="hover:underline">
-                  {g.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
+      {/* Filtro Ano + Meses do ano selecionado (client) */}
+      <YearMonthFilter groups={grouped.map(g => ({ id: g.id, label: g.label, key: g.key }))} />
 
-      {/* Lista por mês (minimalista) */}
+      {/* Lista apenas do ano selecionado (client) */}
       {grouped.length === 0 ? (
         <p className="text-neutral-500">Nenhum artigo publicado ainda.</p>
       ) : (
-        <section className="space-y-10">
-          {grouped.map((g) => (
-            <div key={g.id} className="space-y-3">
-              <h2 id={g.id} className="text-2xl font-semibold text-neutral-900">
-                {g.label}
-              </h2>
-
-              <ul className="space-y-2">
-                {g.items.map((article) => (
-                  <li key={article.slug} className="leading-relaxed">
-                    <Link href={`/articles/${article.slug}/`} className="text-blue-700 hover:underline">
-                      {article.frontmatter.title}
-                    </Link>
-                    {article.frontmatter.summary && (
-                      <span className="block text-sm text-neutral-600">
-                        {article.frontmatter.summary}
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </section>
+        <ArticlesByYearList groups={grouped} />
       )}
     </main>
   );
