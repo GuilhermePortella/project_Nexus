@@ -1,19 +1,13 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 
-// Componentes de MDX (usados pelo MDXRemote)
 export const mdxComponents = {
   a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
     <Link {...props} href={props.href ?? "#"} className="underline" />
   ),
-
-  // Para posts estáticos exportados, usar <img> simples evita dor de cabeça com next/image
   img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    // Ensure an alt attribute exists to satisfy accessibility linting.
-    // If the MDX author didn't provide one, default to empty string for decorative images.
     <img {...props} alt={props.alt ?? ""} style={{ borderRadius: 8, maxWidth: "100%", height: "auto" }} />
   ),
-
-  // Code block simples (pode trocar por shiki/prism depois)
   pre: (props: React.HTMLAttributes<HTMLPreElement>) => (
     <pre
       {...props}
