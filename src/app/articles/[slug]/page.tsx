@@ -1,3 +1,4 @@
+// src/app/articles/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getArticleHtmlBySlug, getAllArticles } from "@/lib/articles";
@@ -5,52 +6,61 @@ import { getArticleHtmlBySlug, getAllArticles } from "@/lib/articles";
 export const runtime = "nodejs";
 export const dynamicParams = false;
 
+// Tipagem mínima do front-matter usado aqui
+type ArticleFrontmatter = {
+  title: string;
+  summary?: string;
+  author?: string;
+  publishedAt?: string;   // preferencial
+  publishedDate?: string; // legado
+};
+
+// Helper seguro para data
+function parsePublished(fm: ArticleFrontmatter): Date | null {
+  const raw = fm.publishedAt ?? fm.publishedDate;
+  if (!raw) return null;
+  const t = Date.parse(raw);
+  return Number.isNaN(t) ? null : new Date(t);
+}
+
 // ============================
-// 🔹 SEO dinâmico
+// 🔹 SEO dinâmico (Next 15)
 // ============================
-export async function generateMetadata(ctx: {
-  params: { slug: string } | Promise<{ slug: string }>;
-}) {
-  const p = await ctx.params;
-  const slug = typeof p === "object" ? p.slug : undefined;
+export async function generateMetadata(
+  { params }: PageProps<"/articles/[slug]">
+) {
+  const { slug } = await params;
 
   if (!slug) {
-    return {
-      title: "Artigo",
-      description: "Artigo do blog.",
-    };
+    return { title: "Artigo", description: "Artigo do blog." };
   }
 
-  try {
-    const article = await getArticleHtmlBySlug(slug);
-    return {
-      title: `${article.frontmatter.title} | Guilherme Portella`,
-      description: article.frontmatter.summary,
-    };
-  } catch {
+  const article = await getArticleHtmlBySlug(slug).catch(() => null);
+  if (!article) {
     return {
       title: "Artigo não encontrado",
       description: "O artigo solicitado não foi encontrado.",
     };
   }
+
+  return {
+    title: `${article.frontmatter.title} | Guilherme Portella`,
+    description: article.frontmatter.summary ?? "Artigo do blog.",
+  };
 }
 
 // ============================
 // 🔹 Página de Artigo
 // ============================
-interface ArticlePageProps {
-  params: { slug: string };
-}
+export default async function ArticlePage(
+  { params }: PageProps<"/articles/[slug]">
+) {
+  const { slug } = await params;
 
-export default async function ArticlePage({ params }: ArticlePageProps) {
-  const { slug } = params;
+  const article = await getArticleHtmlBySlug(slug).catch(() => null);
+  if (!article) notFound();
 
-  let article;
-  try {
-    article = await getArticleHtmlBySlug(slug);
-  } catch {
-    notFound();
-  }
+  const publishedDate = parsePublished(article.frontmatter as ArticleFrontmatter);
 
   return (
     <main className="mx-auto max-w-3xl p-6">
@@ -61,13 +71,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </h1>
           <div className="text-md text-neutral-500">
             <span>Por {article.frontmatter.author ?? "Guilherme Portella"}</span>
-            <span className="mx-2">|</span>
-            <span>
-              {new Date(article.frontmatter.publishedAt ?? "").toLocaleDateString(
-                "pt-BR",
-                { year: "numeric", month: "long", day: "numeric" }
-              )}
-            </span>
+            {publishedDate && (
+              <>
+                <span className="mx-2">|</span>
+                <span>
+                  {publishedDate.toLocaleDateString("pt-BR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </>
+            )}
           </div>
         </header>
 
@@ -77,7 +92,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         />
 
         <div className="mt-12 border-t pt-6">
-          <Link href="/articles/" className="text-blue-600 hover:underline">
+          <Link href="/articles" className="text-blue-600 hover:underline">
             &larr; Voltar para a lista de artigos
           </Link>
         </div>
