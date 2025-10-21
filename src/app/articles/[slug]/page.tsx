@@ -6,34 +6,26 @@ import { getArticleHtmlBySlug, getAllArticles } from "@/lib/articles";
 export const runtime = "nodejs";
 export const dynamicParams = false;
 
-// Tipagem mínima do front-matter usado aqui
 type ArticleFrontmatter = {
   title: string;
   summary?: string;
   author?: string;
-  publishedAt?: string;   // preferencial
-  publishedDate?: string; // legado
+  publishedAt?: string;
+  publishedDate?: string;
 };
 
-// Helper seguro para data
 function parsePublished(fm: ArticleFrontmatter): Date | null {
   const raw = fm.publishedAt ?? fm.publishedDate;
   if (!raw) return null;
   const t = Date.parse(raw);
-  return Number.isNaN(t) ? null : new Date(t);
+  return Number.isNaN(t) ? null : new Date(raw);
 }
 
-// ============================
-// 🔹 SEO dinâmico (Next 15)
-// ============================
+// SEO
 export async function generateMetadata(
-  { params }: PageProps<"/articles/[slug]">
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-
-  if (!slug) {
-    return { title: "Artigo", description: "Artigo do blog." };
-  }
 
   const article = await getArticleHtmlBySlug(slug).catch(() => null);
   if (!article) {
@@ -42,18 +34,15 @@ export async function generateMetadata(
       description: "O artigo solicitado não foi encontrado.",
     };
   }
-
   return {
     title: `${article.frontmatter.title} | Guilherme Portella`,
     description: article.frontmatter.summary ?? "Artigo do blog.",
   };
 }
 
-// ============================
-// 🔹 Página de Artigo
-// ============================
+// Página
 export default async function ArticlePage(
-  { params }: PageProps<"/articles/[slug]">
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
 
@@ -101,9 +90,7 @@ export default async function ArticlePage(
   );
 }
 
-// ============================
-// 🔹 Geração estática (SSG)
-// ============================
+// SSG
 export async function generateStaticParams() {
   const articles = await getAllArticles();
   return articles.map((a) => ({ slug: a.slug }));
