@@ -1,3 +1,5 @@
+// src/app/articles/[slug]/page.tsx
+import type { PageProps } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getArticleHtmlBySlug, getAllArticles } from "@/lib/articles";
@@ -6,51 +8,45 @@ export const runtime = "nodejs";
 export const dynamicParams = false;
 
 // ============================
-// 🔹 SEO dinâmico
+// 🔹 SEO dinâmico (Next 15)
 // ============================
-export async function generateMetadata(ctx: {
-  params: { slug: string } | Promise<{ slug: string }>;
-}) {
-  const p = await ctx.params;
-  const slug = typeof p === "object" ? p.slug : undefined;
+export async function generateMetadata(
+  { params }: PageProps<{ slug: string }>
+) {
+  const { slug } = await params;
 
   if (!slug) {
-    return {
-      title: "Artigo",
-      description: "Artigo do blog.",
-    };
+    return { title: "Artigo", description: "Artigo do blog." };
   }
 
-  try {
-    const article = await getArticleHtmlBySlug(slug);
-    return {
-      title: `${article.frontmatter.title} | Guilherme Portella`,
-      description: article.frontmatter.summary,
-    };
-  } catch {
-    return {
-      title: "Artigo não encontrado",
-      description: "O artigo solicitado não foi encontrado.",
-    };
+  const article = await getArticleHtmlBySlug(slug).catch(() => null);
+  if (!article) {
+    return { title: "Artigo não encontrado", description: "O artigo solicitado não foi encontrado." };
   }
+
+  return {
+    title: `${article.frontmatter.title} | Guilherme Portella`,
+    description: article.frontmatter.summary ?? "Artigo do blog.",
+  };
 }
 
 // ============================
 // 🔹 Página de Artigo
 // ============================
-interface ArticlePageProps {
-  params: { slug: string };
-}
+export default async function ArticlePage(
+  { params }: PageProps<{ slug: string }>
+) {
+  const { slug } = await params;
 
-export default async function ArticlePage({ params }: ArticlePageProps) {
-  const { slug } = params;
+  const article = await getArticleHtmlBySlug(slug).catch(() => null);
+  if (!article) notFound();
 
-  let article;
-  try {
-    article = await getArticleHtmlBySlug(slug);
-  } catch {
-    notFound();
-  }
+  // publishedAt || publishedDate, com fallback seguro
+  const dateStr =
+    article.frontmatter.publishedAt ??
+    (article.frontmatter as any).publishedDate ??
+    "";
+  const publishedDate = dateStr ? new Date(dateStr) : null;
 
   return (
     <main className="mx-auto max-w-3xl p-6">
@@ -61,13 +57,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </h1>
           <div className="text-md text-neutral-500">
             <span>Por {article.frontmatter.author ?? "Guilherme Portella"}</span>
-            <span className="mx-2">|</span>
-            <span>
-              {new Date(article.frontmatter.publishedAt ?? "").toLocaleDateString(
-                "pt-BR",
-                { year: "numeric", month: "long", day: "numeric" }
-              )}
-            </span>
+            {publishedDate && (
+              <>
+                <span className="mx-2">|</span>
+                <span>
+                  {publishedDate.toLocaleDateString("pt-BR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </>
+            )}
           </div>
         </header>
 
@@ -77,7 +78,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         />
 
         <div className="mt-12 border-t pt-6">
-          <Link href="/articles/" className="text-blue-600 hover:underline">
+          <Link href="/articles" className="text-blue-600 hover:underline">
             &larr; Voltar para a lista de artigos
           </Link>
         </div>
