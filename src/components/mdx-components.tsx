@@ -8,7 +8,9 @@ export const mdxComponents = {
 
   // Para posts estáticos exportados, usar <img> simples evita dor de cabeça com next/image
   img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    <img {...props} style={{ borderRadius: 8, maxWidth: "100%", height: "auto" }} />
+    // Ensure an alt attribute exists to satisfy accessibility linting.
+    // If the MDX author didn't provide one, default to empty string for decorative images.
+    <img {...props} alt={props.alt ?? ""} style={{ borderRadius: 8, maxWidth: "100%", height: "auto" }} />
   ),
 
   // Code block simples (pode trocar por shiki/prism depois)
