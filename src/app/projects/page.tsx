@@ -7,11 +7,14 @@ type Repo = {
   name: string;
   html_url: string;
   description: string | null;
+  stargazers_count?: number;
+  language?: string | null;
+  homepage?: string | null;
 };
 
 const PROJECTS_PER_PAGE = 6;
 
-// converte shortcodes de emoji tipo :rocket: → 🚀
+// --------- Emojis básicos
 function parseEmojis(text: string | null): string {
   if (!text) return "";
   return text
@@ -32,20 +35,17 @@ function parseEmojis(text: string | null): string {
     .replace(/:eyes:/g, "👀");
 }
 
-/** Hook simples de breakpoints para definir vizinhança da página */
+/** breakpoints → vizinhos (sm ±1, md ±2, lg ±3) */
 function useNeighborWindow() {
-  const [neighbors, setNeighbors] = useState(1); // mobile: ±1
-
+  const [neighbors, setNeighbors] = useState(1);
   useEffect(() => {
     const mqMd = window.matchMedia("(min-width: 768px)");
     const mqLg = window.matchMedia("(min-width: 1024px)");
-
     const compute = () => {
-      if (mqLg.matches) setNeighbors(7); // lg: ±3
-      else if (mqMd.matches) setNeighbors(5); // md: ±2
-      else setNeighbors(3); // sm: ±1
+      if (mqLg.matches) setNeighbors(3);
+      else if (mqMd.matches) setNeighbors(2);
+      else setNeighbors(1);
     };
-
     compute();
     mqMd.addEventListener("change", compute);
     mqLg.addEventListener("change", compute);
@@ -54,26 +54,14 @@ function useNeighborWindow() {
       mqLg.removeEventListener("change", compute);
     };
   }, []);
-
   return neighbors;
 }
 
-/**
- * Gera itens de paginação com reticências.
- * - edgeCount: quantos números mostrar fixos no começo/fim (ex.: 1, 2 ... ... 19, 20)
- * - neighbors: quantos vizinhos ao redor da página atual (±neighbors)
- * Retorna números (páginas) e a string "..." para reticências.
- */
+/** paginação com reticências */
 function getPaginationItems(total: number, current: number, neighbors: number, edgeCount = 1) {
   const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
   const page = clamp(current, 1, Math.max(1, total));
-
-  const range = (a: number, b: number) => {
-    const out: number[] = [];
-    for (let i = a; i <= b; i++) out.push(i);
-    return out;
-  };
-
+  const range = (a: number, b: number) => Array.from({ length: Math.max(0, b - a + 1) }, (_, i) => a + i);
   if (total <= 1) return [1];
 
   const start = range(1, Math.min(edgeCount, total));
@@ -83,34 +71,25 @@ function getPaginationItems(total: number, current: number, neighbors: number, e
   const middleEnd = clamp(page + neighbors, edgeCount, total - edgeCount);
 
   const items: (number | "...")[] = [];
-
-  // início
   items.push(...start);
-
-  // reticências entre início e meio
   if (middleStart > start[start.length - 1] + 1) items.push("...");
-  // meio
   if (middleEnd >= middleStart) items.push(...range(middleStart, middleEnd));
-  // reticências entre meio e fim
   if (end.length && end[0] > (items[items.length - 1] as number) + 1) items.push("...");
-
-  // fim
   items.push(...end);
 
-  // dedup de números contíguos repetidos
+  // dedup
   const dedup: (number | "...")[] = [];
   for (const it of items) {
-    if (dedup.length === 0) dedup.push(it);
-    else {
-      const last = dedup[dedup.length - 1];
-      if (last === "..." && it === "...") continue;
-      if (typeof last === "number" && typeof it === "number" && last === it) continue;
-      dedup.push(it);
-    }
+    const last = dedup[dedup.length - 1];
+    if (last === "..." && it === "...") continue;
+    if (typeof last === "number" && typeof it === "number" && last === it) continue;
+    dedup.push(it);
   }
-
   return dedup;
 }
+
+/** formata número de estrelas */
+const fmt = new Intl.NumberFormat("en-US", { notation: "compact" });
 
 export default function ProjectsPage() {
   const [repos, setRepos] = useState<Repo[]>([]);
@@ -118,21 +97,13 @@ export default function ProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const totalPages = Math.max(1, Math.ceil(repos.length / PROJECTS_PER_PAGE));
-  const paginatedRepos = repos.slice(
-    (currentPage - 1) * PROJECTS_PER_PAGE,
-    currentPage * PROJECTS_PER_PAGE
-  );
+  // toolbar state
+  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<"recent" | "stars" | "az">("recent");
 
-  // Ajusta currentPage se o total de páginas mudar (ex.: após fetch)
+  // fetch
   useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages);
-    }
-  }, [totalPages, currentPage]);
-
-  useEffect(() => {
-    async function fetchRepos() {
+    (async () => {
       try {
         setLoading(true);
         const res = await fetch(
@@ -147,66 +118,162 @@ export default function ProjectsPage() {
       } finally {
         setLoading(false);
       }
-    }
-    fetchRepos();
+    })();
   }, []);
 
-  const neighbors = useNeighborWindow();
+  // filtra + ordena (antes da paginação)
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    let arr = repos.filter((r) => {
+      if (!q) return true;
+      const hay = `${r.name} ${r.description ?? ""}`.toLowerCase();
+      return hay.includes(q);
+    });
 
+    if (sort === "stars") {
+      arr = arr.sort((a, b) => (b.stargazers_count ?? 0) - (a.stargazers_count ?? 0));
+    } else if (sort === "az") {
+      arr = arr.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      // recent (já vem sort=pushed, mas garantimos)
+      arr = arr.sort((a, b) => a.name.localeCompare(b.name)); // tie-break estável
+    }
+    return arr;
+  }, [repos, query, sort]);
+
+  // paginação
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PROJECTS_PER_PAGE));
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [totalPages, currentPage]);
+
+  const start = (currentPage - 1) * PROJECTS_PER_PAGE;
+  const paginatedRepos = filtered.slice(start, start + PROJECTS_PER_PAGE);
+
+  const neighbors = useNeighborWindow();
   const pageItems = useMemo(
     () => getPaginationItems(totalPages, currentPage, neighbors, 1),
     [totalPages, currentPage, neighbors]
   );
 
   return (
-    <main className="mx-auto max-w-6xl p-6 space-y-12">
-      <header className="space-y-4 text-center">
+    <main className="mx-auto max-w-6xl p-6 space-y-10">
+      {/* Heading */}
+      <header className="space-y-3 text-center">
         <h1 className="text-4xl font-bold">Projetos no GitHub 🚀</h1>
-        <p className="text-neutral-10">
-          Todos os repositórios públicos do meu GitHub são listados
-          automaticamente abaixo. Você pode navegar entre páginas.
+        <p className="text-neutral-600">
+          Repositórios públicos atualizados com frequência. Filtre, ordene e explore.
         </p>
       </header>
 
-      {loading && (
-        <p className="text-center text-neutral-10 animate-pulse">
-          Carregando projetos...
-        </p>
-      )}
+      {/* Toolbar: busca + ordenação */}
+      <section className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2 flex-1">
+          <input
+            value={query}
+            onChange={(e) => { setQuery(e.target.value); setCurrentPage(1); }}
+            placeholder="Buscar por nome ou descrição…"
+            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+            aria-label="Buscar repositórios"
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <label htmlFor="sort" className="text-sm text-neutral-600">Ordenar:</label>
+          <select
+            id="sort"
+            value={sort}
+            onChange={(e) => setSort(e.target.value as any)}
+            className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+          >
+            <option value="recent">Recentes</option>
+            <option value="stars">Mais estrelados</option>
+            <option value="az">A → Z</option>
+          </select>
+        </div>
+      </section>
 
-      {error && (
-        <p className="text-center text-red-10">
-          Erro ao carregar projetos do GitHub.
-        </p>
-      )}
-
-      {!loading && !error && (
+      {/* Grid */}
+      {loading ? (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: PROJECTS_PER_PAGE }).map((_, i) => (
+            <div key={i} className="rounded-lg border border-neutral-200 p-5">
+              <div className="h-5 w-2/3 bg-neutral-200 rounded mb-3 animate-pulse" />
+              <div className="h-4 w-full bg-neutral-100 rounded mb-2 animate-pulse" />
+              <div className="h-4 w-5/6 bg-neutral-100 rounded mb-6 animate-pulse" />
+              <div className="h-8 w-32 bg-neutral-200 rounded animate-pulse" />
+            </div>
+          ))}
+        </div>
+      ) : error ? (
+        <p className="text-center text-red-600">Erro ao carregar projetos do GitHub.</p>
+      ) : filtered.length === 0 ? (
+        <p className="text-center text-neutral-500">Nenhum projeto encontrado para “{query}”.</p>
+      ) : (
         <>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginatedRepos.map((repo) => (
-              <div
-                key={repo.id}
-                className="border rounded-lg p-5 hover:bg-neutral-50 transition-colors"
-              >
-                <h3 className="text-lg font-semibold text-blue-10 mb-2">
-                  {repo.name}
-                </h3>
-                <p className="text-sm text-neutral-600 line-clamp-3 mb-3">
-                  {repo.description ? parseEmojis(repo.description) : "Sem descrição."}
-                </p>
+            {paginatedRepos.map((repo) => {
+              const stars = repo.stargazers_count ?? 0;
+              const lang = repo.language ?? undefined;
+              const hasHomepage = repo.homepage && /^https?:\/\//.test(repo.homepage);
+
+              return (
                 <a
+                  key={repo.id}
                   href={repo.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:underline"
+                  className="group block rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/40"
                 >
-                  Ver no GitHub →
+                  <article className="flex h-full flex-col gap-3">
+                    {/* Header */}
+                    <div className="flex items-start">
+                      <h3 className="text-lg font-semibold text-neutral-900 group-hover:text-blue-700">
+                        {repo.name}
+                      </h3>
+                    </div>
+
+                    {/* Meta: stars + language */}
+                    <div className="flex items-center gap-3 text-xs text-neutral-600">
+                      <span className="inline-flex items-center gap-1">
+                        <span aria-hidden>⭐</span>
+                        <span>{fmt.format(stars)}</span>
+                      </span>
+                      {lang && (
+                        <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5">
+                          {lang}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Descrição */}
+                    <p className="text-sm text-neutral-700 line-clamp-3">
+                      {repo.description ? parseEmojis(repo.description) : "Sem descrição."}
+                    </p>
+
+                    {/* Footer (CTA) */}
+                    <div className="mt-auto flex items-center gap-2 pt-2">
+                      <span className="text-sm text-blue-600 group-hover:underline">
+                        Ver no GitHub →
+                      </span>
+                      {hasHomepage && (
+                        <a
+                          key={repo.id}
+                          href={repo.html_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group block rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                        >
+                          Demo
+                        </a>
+                      )}
+                    </div>
+                  </article>
                 </a>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          {/* Paginação com reticências (responsiva) */}
+          {/* Paginação com reticências */}
           <nav className="pt-6">
             <ul className="flex flex-wrap items-center justify-center gap-2">
               <li>
@@ -222,9 +289,7 @@ export default function ProjectsPage() {
 
               {pageItems.map((it, idx) =>
                 it === "..." ? (
-                  <li key={`e-${idx}`} className="px-2 text-neutral-500 select-none">
-                    …
-                  </li>
+                  <li key={`e-${idx}`} className="px-2 text-neutral-500 select-none">…</li>
                 ) : (
                   <li key={it}>
                     <button
