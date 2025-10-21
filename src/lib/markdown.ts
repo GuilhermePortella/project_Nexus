@@ -14,6 +14,8 @@ import rehypeStringify from "rehype-stringify";
 
 function buildSchema() {
   // Clona o schema default e permite class/id nos elementos relevantes
+  // Allow a relaxed type here because we're extending the default schema from rehype-sanitize.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const schema: any = JSON.parse(JSON.stringify(defaultSchema));
 
   // Garanta a lista de tags necessárias para tabelas/containers
