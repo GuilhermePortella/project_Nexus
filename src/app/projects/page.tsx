@@ -91,6 +91,12 @@ function getPaginationItems(total: number, current: number, neighbors: number, e
 /** formata número de estrelas */
 const fmt = new Intl.NumberFormat("en-US", { notation: "compact" });
 
+const SORT_OPTIONS = ["recent", "stars", "az"] as const;
+type SortOption = (typeof SORT_OPTIONS)[number];
+function isSortOption(v: string): v is SortOption {
+  return (SORT_OPTIONS as readonly string[]).includes(v);
+}
+
 export default function ProjectsPage() {
   const [repos, setRepos] = useState<Repo[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -99,7 +105,7 @@ export default function ProjectsPage() {
 
   // toolbar state
   const [query, setQuery] = useState("");
-  const [sort, setSort] = useState<"recent" | "stars" | "az">("recent");
+  const [sort, setSort] = useState<SortOption>("recent");
 
   // fetch
   useEffect(() => {
@@ -121,7 +127,7 @@ export default function ProjectsPage() {
     })();
   }, []);
 
-  // filtra + ordena (antes da paginação)
+  // filtra + ordena
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     let arr = repos.filter((r) => {
@@ -134,9 +140,6 @@ export default function ProjectsPage() {
       arr = arr.sort((a, b) => (b.stargazers_count ?? 0) - (a.stargazers_count ?? 0));
     } else if (sort === "az") {
       arr = arr.sort((a, b) => a.name.localeCompare(b.name));
-    } else {
-      // recent (já vem sort=pushed, mas garantimos)
-      arr = arr.sort((a, b) => a.name.localeCompare(b.name)); // tie-break estável
     }
     return arr;
   }, [repos, query, sort]);
@@ -166,7 +169,7 @@ export default function ProjectsPage() {
         </p>
       </header>
 
-      {/* Toolbar: busca + ordenação */}
+      {/* Toolbar */}
       <section className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 flex-1">
           <input
@@ -182,7 +185,10 @@ export default function ProjectsPage() {
           <select
             id="sort"
             value={sort}
-            onChange={(e) => setSort(e.target.value as any)}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (isSortOption(v)) setSort(v);
+            }}
             className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40"
           >
             <option value="recent">Recentes</option>
@@ -222,17 +228,15 @@ export default function ProjectsPage() {
                   href={repo.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group block rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                  className="group block rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
                 >
                   <article className="flex h-full flex-col gap-3">
-                    {/* Header */}
                     <div className="flex items-start">
                       <h3 className="text-lg font-semibold text-neutral-900 group-hover:text-blue-700">
                         {repo.name}
                       </h3>
                     </div>
 
-                    {/* Meta: stars + language */}
                     <div className="flex items-center gap-3 text-xs text-neutral-600">
                       <span className="inline-flex items-center gap-1">
                         <span aria-hidden>⭐</span>
@@ -245,23 +249,21 @@ export default function ProjectsPage() {
                       )}
                     </div>
 
-                    {/* Descrição */}
                     <p className="text-sm text-neutral-700 line-clamp-3">
                       {repo.description ? parseEmojis(repo.description) : "Sem descrição."}
                     </p>
 
-                    {/* Footer (CTA) */}
                     <div className="mt-auto flex items-center gap-2 pt-2">
                       <span className="text-sm text-blue-600 group-hover:underline">
                         Ver no GitHub →
                       </span>
                       {hasHomepage && (
                         <a
-                          key={repo.id}
-                          href={repo.html_url}
+                          href={repo.homepage!}
+                          onClick={(e) => e.stopPropagation()}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group block rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                          className="ml-auto text-xs rounded border px-2 py-1 text-neutral-700 hover:bg-neutral-50"
                         >
                           Demo
                         </a>
