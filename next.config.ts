@@ -4,8 +4,10 @@ const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,
   images: {
-    unoptimized: true, // 👈 habilita <Image> sem API de otimização
+    unoptimized: true,
   },
+
+  basePath: process.env.NEXT_BASE_PATH || undefined,
 };
 
 export default nextConfig;
