@@ -228,49 +228,43 @@ export default function ProjectsPage() {
                   href={repo.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group block rounded-xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                  className="group block border border-neutral-300 bg-white p-5 transition hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
                 >
-                  <article className="flex h-full flex-col gap-3">
-                    <div className="flex items-start">
-                      <h3 className="text-lg font-semibold text-neutral-900 group-hover:text-blue-700">
+                  <article className="space-y-2">
+                    {/* Título serifado, sublinhado só no hover */}
+                    <h3 className="text-[1.125rem] font-semibold tracking-tight text-neutral-900 font-[ui-serif,Georgia,Times,serif]">
+                      <span className="underline decoration-transparent group-hover:decoration-current">
                         {repo.name}
-                      </h3>
-                    </div>
-
-                    <div className="flex items-center gap-3 text-xs text-neutral-600">
-                      <span className="inline-flex items-center gap-1">
-                        <span aria-hidden>⭐</span>
-                        <span>{fmt.format(stars)}</span>
                       </span>
-                      {lang && (
-                        <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5">
-                          {lang}
-                        </span>
+                    </h3>
+
+                    {/* Metadados em linha, estilo “byline” */}
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-600">
+                      <span className="inline-flex items-center gap-1">
+                        <span aria-hidden>⭐</span>{fmt.format(repo.stargazers_count ?? 0)}
+                      </span>
+                      {repo.language && (
+                        <>
+                          <span aria-hidden>•</span>
+                          <span className="uppercase tracking-wide">{repo.language}</span>
+                        </>
                       )}
                     </div>
 
-                    <p className="text-sm text-neutral-700 line-clamp-3">
+                    {/* Resumo enxuto */}
+                    <p className="text-sm text-neutral-700">
                       {repo.description ? parseEmojis(repo.description) : "Sem descrição."}
                     </p>
 
-                    <div className="mt-auto flex items-center gap-2 pt-2">
-                      <span className="text-sm text-blue-600 group-hover:underline">
+                    {/* CTA textual discreto */}
+                    <div className="pt-1">
+                      <span className="text-sm text-blue-700 underline underline-offset-2 group-hover:text-blue-800">
                         Ver no GitHub →
                       </span>
-                      {hasHomepage && (
-                        <a
-                          href={repo.homepage!}
-                          onClick={(e) => e.stopPropagation()}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ml-auto text-xs rounded border px-2 py-1 text-neutral-700 hover:bg-neutral-50"
-                        >
-                          Demo
-                        </a>
-                      )}
                     </div>
                   </article>
                 </a>
+
               );
             })}
           </div>
@@ -297,16 +291,14 @@ export default function ProjectsPage() {
                     <button
                       onClick={() => setCurrentPage(it)}
                       aria-current={it === currentPage ? "page" : undefined}
-                      className={
-                        "px-3 py-1 rounded border text-sm " +
-                        (it === currentPage
-                          ? "bg-blue-600 text-white border-blue-600"
-                          : "hover:bg-neutral-100")
-                      }
+                      className={`px-2.5 py-1 text-sm border border-neutral-300
+                      ${it === currentPage ? "bg-neutral-100" : "hover:bg-neutral-50"}
+                      focus:outline-none focus:ring-2 focus:ring-blue-500/20`}
                     >
                       {it}
                     </button>
                   </li>
+
                 )
               )}
 
