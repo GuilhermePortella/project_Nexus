@@ -244,3 +244,4 @@ h1, h2, h3, h4 { text-wrap: balance; }
 @media (min-width: 641px) {
   .prose, .prose h2, .prose h3 { scroll-margin-top: 96px; }
 }
+.h-serif { font-family: ui-serif, Georgia, "Times New Roman", Times, serif; }
