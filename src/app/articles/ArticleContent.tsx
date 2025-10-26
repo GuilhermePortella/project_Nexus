@@ -8,7 +8,7 @@ export default function ArticleContent({ html }: { html: string }) {
       const root = ref.current;
       if (!root) return;
 
-      const pres = Array.from(root.querySelectorAll("pre"));
+      const pres = Array.from(root.querySelectorAll<HTMLElement>("pre"));
       pres.forEach((pre) => {
          if (pre.querySelector('[data-copy="btn"]')) return;
          const btn = document.createElement("button");
@@ -16,7 +16,7 @@ export default function ArticleContent({ html }: { html: string }) {
          btn.className =
             "absolute top-2 right-2 rounded-md border px-2 py-1 text-xs bg-white/80 backdrop-blur border-neutral-300 hover:bg-white transition";
          btn.innerText = "Copiar";
-         (pre as HTMLElement).style.position = "relative";
+         pre.style.position = "relative";
          pre.appendChild(btn);
 
          btn.addEventListener("click", async () => {

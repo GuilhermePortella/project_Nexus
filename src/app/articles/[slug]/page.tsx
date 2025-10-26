@@ -1,19 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getArticleHtmlBySlug, getAllArticles } from "@/lib/articles";
+import { getArticleHtmlBySlug, getAllArticles, type ArticleFrontmatter } from "@/lib/articles";
 import ArticleTOC from "../ArticleTOC";
 
 export const runtime = "nodejs";
 export const dynamicParams = false;
-
-type ArticleFrontmatter = {
-  title: string;
-  summary?: string;
-  author?: string;
-  publishedAt?: string;
-  publishedDate?: string;
-  tags?: string[];
-};
 
 function parsePublished(fm: ArticleFrontmatter): Date | null {
   const raw = fm.publishedAt ?? fm.publishedDate;
@@ -36,9 +27,9 @@ function readingTimeFromHtml(html: string): number {
 }
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: { slug: string } }
 ) {
-  const { slug } = await params;
+  const { slug } = params;
   const article = await getArticleHtmlBySlug(slug).catch(() => null);
   if (!article) {
     return { title: "Artigo não encontrado", description: "O artigo solicitado não foi encontrado." };
@@ -50,15 +41,16 @@ export async function generateMetadata(
 }
 
 export default async function ArticlePage(
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: { slug: string } }
 ) {
-  const { slug } = await params;
+  const { slug } = params;
   const article = await getArticleHtmlBySlug(slug).catch(() => null);
   if (!article) notFound();
 
-  const publishedDate = parsePublished(article.frontmatter as ArticleFrontmatter);
+  const publishedDate = parsePublished(article.frontmatter);
   const dateLabel = safeDateLabel(publishedDate);
   const minutes = readingTimeFromHtml(article.html);
+  const tags = Array.isArray(article.frontmatter.tags) ? article.frontmatter.tags : [];
 
   return (
     <main className="mx-auto max-w-5xl p-6">
@@ -79,17 +71,17 @@ export default async function ArticlePage(
             <span>Por {article.frontmatter.author ?? "Guilherme Portella"}</span>
             {dateLabel && (
               <>
-                <span aria-hidden>•</span>
+                <span aria-hidden>·</span>
                 <time dateTime={publishedDate?.toISOString()}>{dateLabel}</time>
               </>
             )}
-            <span aria-hidden>•</span>
+            <span aria-hidden>·</span>
             <span>{minutes} min de leitura</span>
-            {Array.isArray(article.frontmatter.tags) && article.frontmatter.tags.length > 0 && (
+            {tags.length > 0 && (
               <>
-                <span aria-hidden>•</span>
+                <span aria-hidden>·</span>
                 <ul className="inline-flex flex-wrap gap-2">
-                  {article.frontmatter.tags!.map((t) => (
+                  {tags.map((t) => (
                     <li key={t} className="rounded-full border px-2 py-0.5 text-xs text-neutral-700">{t}</li>
                   ))}
                 </ul>
