@@ -1,4 +1,3 @@
-// src/app/articles/ArticleTOC.tsx
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -32,8 +31,10 @@ export default function ArticleTOC({
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) {
-            const h = e.target as HTMLElement;
-            setActiveId(h.id);
+            const h = e.target;
+            if (h instanceof HTMLElement) {
+              setActiveId(h.id);
+            }
           }
         }
       },
