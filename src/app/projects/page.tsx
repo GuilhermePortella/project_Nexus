@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import ProjectCard from "./ProjectCard";
 
 type Repo = {
   id: number;
@@ -217,56 +218,17 @@ export default function ProjectsPage() {
       ) : (
         <>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginatedRepos.map((repo) => {
-              const stars = repo.stargazers_count ?? 0;
-              const lang = repo.language ?? undefined;
-              const hasHomepage = repo.homepage && /^https?:\/\//.test(repo.homepage);
-
-              return (
-                <a
-                  key={repo.id}
-                  href={repo.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block border border-neutral-300 bg-white p-5 transition hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
-                >
-                  <article className="space-y-2">
-                    {/* Título serifado, sublinhado só no hover */}
-                    <h3 className="text-[1.125rem] font-semibold tracking-tight text-neutral-900 font-[ui-serif,Georgia,Times,serif]">
-                      <span className="underline decoration-transparent group-hover:decoration-current">
-                        {repo.name}
-                      </span>
-                    </h3>
-
-                    {/* Metadados em linha, estilo “byline” */}
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-600">
-                      <span className="inline-flex items-center gap-1">
-                        <span aria-hidden>⭐</span>{fmt.format(repo.stargazers_count ?? 0)}
-                      </span>
-                      {repo.language && (
-                        <>
-                          <span aria-hidden>•</span>
-                          <span className="uppercase tracking-wide">{repo.language}</span>
-                        </>
-                      )}
-                    </div>
-
-                    {/* Resumo enxuto */}
-                    <p className="text-sm text-neutral-700">
-                      {repo.description ? parseEmojis(repo.description) : "Sem descrição."}
-                    </p>
-
-                    {/* CTA textual discreto */}
-                    <div className="pt-1">
-                      <span className="text-sm text-blue-700 underline underline-offset-2 group-hover:text-blue-800">
-                        Ver no GitHub →
-                      </span>
-                    </div>
-                  </article>
-                </a>
-
-              );
-            })}
+            {paginatedRepos.map((repo) => (
+              <ProjectCard
+                key={repo.id}
+                name={repo.name}
+                description={repo.description ? parseEmojis(repo.description) : "Sem descrição."}
+                stars={repo.stargazers_count ?? 0}
+                language={repo.language ?? null}
+                githubUrl={repo.html_url}
+                homepage={repo.homepage ?? null}
+              />
+            ))}
           </div>
 
           {/* Paginação com reticências */}
