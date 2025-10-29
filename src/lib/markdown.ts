@@ -12,16 +12,16 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import rehypeFixAssetUrls from "./rehype-fix-asset-urls";
 
-import type { Schema, PropertyDefinition } from "hast-util-sanitize";
+import type { Schema } from "hast-util-sanitize";
+
+type PropertyDefinition = string | [string, ...(string | number | boolean | RegExp | null | undefined)[]];
 
 function buildSchema(): Schema {
   const schema: Schema = structuredClone(defaultSchema as Schema);
 
-  // Garante estrutura consistente
   schema.tagNames ??= [];
   schema.attributes ??= {};
 
-  // Função para garantir que a tag exista
   const ensureTag = (name: string) => {
     if (!schema.tagNames!.includes(name)) schema.tagNames!.push(name);
   };
@@ -34,21 +34,18 @@ function buildSchema(): Schema {
     "a"
   ].forEach(ensureTag);
 
-  // Helper tipado corretamente
   const allow = (el: string, attrs: PropertyDefinition[]) => {
-    const existing = schema.attributes![el] ?? [];
-    schema.attributes![el] = [...existing, ...attrs];
+    const existing = (schema.attributes?.[el] as PropertyDefinition[] | undefined) ?? [];
+    (schema.attributes as Record<string, PropertyDefinition[]>)[el] = [
+      ...existing,
+      ...attrs,
+    ];
   };
 
-  // Classes e IDs comuns
   ["*", "div", "span", "code", "pre", "table", "thead", "tbody", "tr", "th", "td", "figure", "figcaption"]
     .forEach(el => allow(el, [["className"], ["id"]]));
-
-  // Tabelas ricas
   allow("th", [["colSpan", "number"], ["rowSpan", "number"], ["scope"]]);
   allow("td", [["colSpan", "number"], ["rowSpan", "number"]]);
-
-  // Imagens e mídia
   allow("img", [
     ["src"], ["alt"], ["className"], ["width", "number"], ["height", "number"],
     ["loading"], ["decoding"], ["srcset"], ["sizes"]
@@ -56,8 +53,6 @@ function buildSchema(): Schema {
   allow("source", [["src"], ["srcset"], ["type"]]);
   allow("video", [["controls"], ["poster"], ["width", "number"], ["height", "number"], ["className"]]);
   allow("audio", [["controls"], ["className"]]);
-
-  // Links
   allow("a", [["href"], ["target"], ["rel"], ["className"]]);
 
   return schema;
