@@ -1,10 +1,6 @@
-// src/app/page.tsx
 import Link from "next/link";
 import { getAllArticles } from "@/lib/articles";
 
-/* =========================
-   Utils de data
-========================= */
 function safeDate(d?: string): Date | null {
   if (!d) return null;
   const t = Date.parse(d);
@@ -76,9 +72,6 @@ function CTAcard({
   );
 }
 
-/* =========================
-   FAQ Grid (perguntas canônicas)
-========================= */
 export type FaqCard = {
   id: string;
   question: string;
@@ -119,13 +112,9 @@ function FaqGrid({ items }: { items: FaqCard[] }) {
   );
 }
 
-/* =========================
-   Página
-========================= */
 export default async function Home() {
   const recentArticles = await getAllArticles(3);
 
-  // Perguntas canônicas (edite e adicione quantas quiser)
   const faqCanonicas: FaqCard[] = [
     {
       id: "hexagonal",
@@ -159,7 +148,6 @@ export default async function Home() {
 
   return (
     <main>
-      {/* HERO */}
       <section className="relative bg-neutral-50">
         <div className="container mx-auto max-w-6xl px-4 py-16 md:py-24">
           <div className="mb-10 text-center">
@@ -175,7 +163,6 @@ export default async function Home() {
             {/* <SearchBar /> */}
           </div>
 
-          {/* CTAs */}
           <div className="mx-auto -mb-36 grid max-w-6xl gap-6 md:grid-cols-3">
             <CTAcard
               title="Artigos"
@@ -199,7 +186,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Artigos recentes (editorial) */}
       <section className="mx-auto max-w-5xl px-6 pt-40 pb-6 space-y-6">
         <div className="flex items-baseline justify-between border-b pb-3">
           <h2 className="h-serif text-2xl font-bold">Artigos Recentes</h2>
@@ -260,7 +246,6 @@ export default async function Home() {
         )}
       </section>
 
-      {/* FAQ canônico (visual distinto) */}
       <section className="bg-white py-16 md:py-28">
         <div className="container mx-auto px-6">
           <div className="mb-12 text-center">

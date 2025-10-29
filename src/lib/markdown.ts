@@ -1,4 +1,3 @@
-// src/lib/markdown.ts
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
@@ -12,14 +11,12 @@ import rehypeKatex from "rehype-katex";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 
+import rehypeFixAssetUrls from "./rehype-fix-asset-urls";
+
 function buildSchema() {
-  // Clona o schema default e permite class/id nos elementos relevantes
-  // Allow a relaxed type here because we're extending the default schema from rehype-sanitize.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const schema: any = JSON.parse(JSON.stringify(defaultSchema));
 
-  // Garanta a lista de tags necessárias para tabelas/containers
-  const ensure = (name: string) => {
+  const ensureTag = (name: string) => {
     if (!schema.tagNames) schema.tagNames = [];
     if (!schema.tagNames.includes(name)) schema.tagNames.push(name);
   };
@@ -27,34 +24,29 @@ function buildSchema() {
   [
     "div", "span", "code", "pre",
     "table", "thead", "tbody", "tr", "th", "td",
-  ].forEach(ensure);
+    "figure", "figcaption",
+    "img", "source", "video", "audio",
+    "a"
+  ].forEach(ensureTag);
 
-  // Permitir atributos class/id em todos os elementos (ou ao menos nos principais)
   if (!schema.attributes) schema.attributes = {};
-  const allowAttrs = (el: string) => {
-    schema.attributes[el] = [
-      ...(schema.attributes[el] || []),
-      ["className"], // Tailwind (class)
-      ["id"],
-      // Se um dia precisar data-*:
-      // ["data-*"]
-    ];
+
+  const allow = (el: string, attrs: unknown[]) => {
+    schema.attributes[el] = [...(schema.attributes[el] || []), ...attrs];
   };
 
-  ["*","div","span","code","pre","table","thead","tbody","tr","th","td"].forEach(allowAttrs);
-
-  // Opcional: permitir colspan/rowspan explicitamente (útil em tabelas mais ricas)
-  schema.attributes.th = [
-    ...(schema.attributes.th || []),
-    ["colSpan", "number"],
-    ["rowSpan", "number"],
-    ["scope"]
-  ];
-  schema.attributes.td = [
-    ...(schema.attributes.td || []),
-    ["colSpan", "number"],
-    ["rowSpan", "number"]
-  ];
+  ["*", "div", "span", "code", "pre", "table", "thead", "tbody", "tr", "th", "td", "figure", "figcaption"]
+    .forEach(el => allow(el, [["className"], ["id"]]));
+  allow("th", [["colSpan", "number"], ["rowSpan", "number"], ["scope"]]);
+  allow("td", [["colSpan", "number"], ["rowSpan", "number"]]);
+  allow("img", [
+    ["src"], ["alt"], ["className"], ["width", "number"], ["height", "number"],
+    ["loading"], ["decoding"], ["srcset"], ["sizes"]
+  ]);
+  allow("source", [["src"], ["srcset"], ["type"]]);
+  allow("video", [["controls"], ["poster"], ["width", "number"], ["height", "number"], ["className"]]);
+  allow("audio", [["controls"], ["className"]]);
+  allow("a", [["href"], ["target"], ["rel"], ["className"]]);
 
   return schema;
 }
@@ -66,11 +58,12 @@ export async function markdownToHtml(md: string): Promise<string> {
     .use(remarkBreaks)
     .use(remarkMath)
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeRaw) // permite HTML embutido
+    .use(rehypeRaw)
+    .use(rehypeFixAssetUrls)
+    .use(rehypeSanitize, buildSchema())
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings, { behavior: "wrap" })
     .use(rehypeKatex)
-    .use(rehypeSanitize, buildSchema()) // <- schema custom liberando class/id
     .use(rehypeStringify)
     .process(md);
 
