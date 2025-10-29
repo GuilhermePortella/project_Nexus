@@ -10,15 +10,20 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeKatex from "rehype-katex";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
-
 import rehypeFixAssetUrls from "./rehype-fix-asset-urls";
 
-function buildSchema() {
-  const schema: any = JSON.parse(JSON.stringify(defaultSchema));
+import type { Schema, PropertyDefinition } from "hast-util-sanitize";
 
+function buildSchema(): Schema {
+  const schema: Schema = structuredClone(defaultSchema as Schema);
+
+  // Garante estrutura consistente
+  schema.tagNames ??= [];
+  schema.attributes ??= {};
+
+  // Função para garantir que a tag exista
   const ensureTag = (name: string) => {
-    if (!schema.tagNames) schema.tagNames = [];
-    if (!schema.tagNames.includes(name)) schema.tagNames.push(name);
+    if (!schema.tagNames!.includes(name)) schema.tagNames!.push(name);
   };
 
   [
@@ -29,16 +34,21 @@ function buildSchema() {
     "a"
   ].forEach(ensureTag);
 
-  if (!schema.attributes) schema.attributes = {};
-
-  const allow = (el: string, attrs: unknown[]) => {
-    schema.attributes[el] = [...(schema.attributes[el] || []), ...attrs];
+  // Helper tipado corretamente
+  const allow = (el: string, attrs: PropertyDefinition[]) => {
+    const existing = schema.attributes![el] ?? [];
+    schema.attributes![el] = [...existing, ...attrs];
   };
 
+  // Classes e IDs comuns
   ["*", "div", "span", "code", "pre", "table", "thead", "tbody", "tr", "th", "td", "figure", "figcaption"]
     .forEach(el => allow(el, [["className"], ["id"]]));
+
+  // Tabelas ricas
   allow("th", [["colSpan", "number"], ["rowSpan", "number"], ["scope"]]);
   allow("td", [["colSpan", "number"], ["rowSpan", "number"]]);
+
+  // Imagens e mídia
   allow("img", [
     ["src"], ["alt"], ["className"], ["width", "number"], ["height", "number"],
     ["loading"], ["decoding"], ["srcset"], ["sizes"]
@@ -46,6 +56,8 @@ function buildSchema() {
   allow("source", [["src"], ["srcset"], ["type"]]);
   allow("video", [["controls"], ["poster"], ["width", "number"], ["height", "number"], ["className"]]);
   allow("audio", [["controls"], ["className"]]);
+
+  // Links
   allow("a", [["href"], ["target"], ["rel"], ["className"]]);
 
   return schema;

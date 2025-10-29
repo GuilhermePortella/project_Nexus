@@ -84,9 +84,6 @@ function getPaginationItems(total: number, current: number, neighbors: number, e
   }
   return dedup;
 }
-
-const fmt = new Intl.NumberFormat("en-US", { notation: "compact" });
-
 const SORT_OPTIONS = ["recent", "stars", "az"] as const;
 type SortOption = (typeof SORT_OPTIONS)[number];
 function isSortOption(v: string): v is SortOption {
