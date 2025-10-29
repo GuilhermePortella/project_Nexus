@@ -1,4 +1,3 @@
-// src/app/curiosidades/page.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -16,7 +15,6 @@ export default function CuriosidadesPage() {
         </p>
       </header>
 
-      {/* Favoritos: Filmes & Séries */}
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Filmes & Séries</h2>
         <p className="text-neutral-900">
@@ -31,11 +29,9 @@ export default function CuriosidadesPage() {
         </ul>
       </section>
 
-      {/* Músicas — Spotify */}
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Músicas</h2>
 
-        {/* Wrapper responsivo + borda arredondada */}
         <div className="rounded-xl overflow-hidden">
           <iframe
             title="Playlist do Spotify — Guilherme Portella"
@@ -51,7 +47,6 @@ export default function CuriosidadesPage() {
           />
         </div>
 
-        {/* Fallback acessível */}
         <p className="text-sm text-neutral-600">
           Caso o player não carregue, você pode{" "}
           <a

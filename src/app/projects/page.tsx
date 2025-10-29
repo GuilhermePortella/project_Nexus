@@ -15,7 +15,6 @@ type Repo = {
 
 const PROJECTS_PER_PAGE = 6;
 
-// --------- Emojis básicos
 function parseEmojis(text: string | null): string {
   if (!text) return "";
   return text
@@ -36,7 +35,6 @@ function parseEmojis(text: string | null): string {
     .replace(/:eyes:/g, "👀");
 }
 
-/** breakpoints → vizinhos (sm ±1, md ±2, lg ±3) */
 function useNeighborWindow() {
   const [neighbors, setNeighbors] = useState(1);
   useEffect(() => {
@@ -58,7 +56,6 @@ function useNeighborWindow() {
   return neighbors;
 }
 
-/** paginação com reticências */
 function getPaginationItems(total: number, current: number, neighbors: number, edgeCount = 1) {
   const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
   const page = clamp(current, 1, Math.max(1, total));
@@ -78,7 +75,6 @@ function getPaginationItems(total: number, current: number, neighbors: number, e
   if (end.length && end[0] > (items[items.length - 1] as number) + 1) items.push("...");
   items.push(...end);
 
-  // dedup
   const dedup: (number | "...")[] = [];
   for (const it of items) {
     const last = dedup[dedup.length - 1];
@@ -89,7 +85,6 @@ function getPaginationItems(total: number, current: number, neighbors: number, e
   return dedup;
 }
 
-/** formata número de estrelas */
 const fmt = new Intl.NumberFormat("en-US", { notation: "compact" });
 
 const SORT_OPTIONS = ["recent", "stars", "az"] as const;
@@ -104,11 +99,9 @@ export default function ProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // toolbar state
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortOption>("recent");
 
-  // fetch
   useEffect(() => {
     (async () => {
       try {
@@ -128,7 +121,6 @@ export default function ProjectsPage() {
     })();
   }, []);
 
-  // filtra + ordena
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     let arr = repos.filter((r) => {
@@ -145,7 +137,6 @@ export default function ProjectsPage() {
     return arr;
   }, [repos, query, sort]);
 
-  // paginação
   const totalPages = Math.max(1, Math.ceil(filtered.length / PROJECTS_PER_PAGE));
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
@@ -162,7 +153,6 @@ export default function ProjectsPage() {
 
   return (
     <main className="mx-auto max-w-6xl p-6 space-y-10">
-      {/* Heading */}
       <header className="space-y-3 text-center">
         <h1 className="text-4xl font-bold">Projetos no GitHub 🚀</h1>
         <p className="text-neutral-600">
@@ -170,7 +160,6 @@ export default function ProjectsPage() {
         </p>
       </header>
 
-      {/* Toolbar */}
       <section className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 flex-1">
           <input
@@ -199,7 +188,6 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Grid */}
       {loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: PROJECTS_PER_PAGE }).map((_, i) => (
@@ -231,7 +219,6 @@ export default function ProjectsPage() {
             ))}
           </div>
 
-          {/* Paginação com reticências */}
           <nav className="pt-6">
             <ul className="flex flex-wrap items-center justify-center gap-2">
               <li>
