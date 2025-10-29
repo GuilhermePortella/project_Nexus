@@ -19,7 +19,9 @@ export default function CuriosidadesPage() {
       {/* Favoritos: Filmes & Séries */}
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Filmes & Séries</h2>
-        <p className="text-neutral-900">Quando não estou modelando domínios, provavelmente estou revendo algo daqui:</p>
+        <p className="text-neutral-900">
+          Quando não estou modelando domínios, provavelmente estou revendo algo daqui:
+        </p>
         <ul className="list-disc list-inside text-neutral-900 space-y-1">
           <li>🎬 <em>Interstellar</em> (Nolan)</li>
           <li>🧪 <em>Mr. Robot</em></li>
@@ -29,22 +31,38 @@ export default function CuriosidadesPage() {
         </ul>
       </section>
 
-      {/* Música — Playlist do Spotify */}
+      {/* Músicas — Spotify */}
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Músicas</h2>
-        <div className="flex justify-center">
+
+        {/* Wrapper responsivo + borda arredondada */}
+        <div className="rounded-xl overflow-hidden">
           <iframe
+            title="Playlist do Spotify — Guilherme Portella"
             data-testid="embed-iframe"
-            style={{ borderRadius: "12px" }}
+            style={{ borderRadius: 12 }}
             src="https://open.spotify.com/embed/playlist/3LuwLZF9DuqtT5n92wCmcU?utm_source=generator&theme=0"
-            width="90%"
-            height="152"
-            frameBorder="0"
-            allowFullScreen
+            width="100%"
+            height="352"
+            frameBorder={0}
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            allowFullScreen
             loading="lazy"
           />
         </div>
+
+        {/* Fallback acessível */}
+        <p className="text-sm text-neutral-600">
+          Caso o player não carregue, você pode{" "}
+          <a
+            href="https://open.spotify.com/playlist/3LuwLZF9DuqtT5n92wCmcU"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-700 underline underline-offset-2 hover:text-blue-800"
+          >
+            abrir a playlist diretamente no Spotify →
+          </a>
+        </p>
       </section>
     </main>
   );
