@@ -1,11 +1,9 @@
-// Gera sitemap 100% estático, compatível com `output: "export"`
-export const dynamic = "force-static";     // exige static export
-export const revalidate = 3600;            // 1h (não tem efeito em export puro, mas é OK)
+export const dynamic = "force-static";
+export const revalidate = 3600;            
 
 import type { MetadataRoute } from "next";
 import { getAllArticles } from "@/lib/articles";
 
-// Opcional: defina o domínio do site via env
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -33,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       : now;
 
     urls.push({
-      url: `${BASE_URL}/articles/${a.slug}/`, // trailing slash p/ export estático
+      url: `${BASE_URL}/articles/${a.slug}/`, 
       lastModified: last,
       changeFrequency: "monthly",
       priority: 0.7,

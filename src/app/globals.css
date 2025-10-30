@@ -1,11 +1,5 @@
-/* src/app/globals.css */
-
-/* Carrega Tailwind v4 */
 @import "tailwindcss";
 
-/* ================================
-   BASE: resets, fontes, tokens
-================================ */
 :root {
   --ink-700: #374151;    /* neutral-700 */
   --ink-800: #1f2937;    /* neutral-800 */
@@ -17,13 +11,12 @@
 html, body {
   min-height: 100%;
   background: #ffffff;
-  color: #111827; /* neutral-900 */
+  color: #111827;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 
-/* Font-face opcional (ajustes óticos) */
 @font-face {
   font-family: 'Roboto';
   src: local('Roboto');
@@ -32,7 +25,6 @@ html, body {
   size-adjust: 95.36%;
 }
 
-/* Links padrão (fora da .prose) */
 a {
   color: var(--link);
   text-decoration: none;
@@ -43,9 +35,6 @@ a:hover {
   text-underline-offset: 3px;
 }
 
-/* ================================
-   COMPONENTS: layout, navbar, tipografia
-================================ */
 .container {
   max-width: 1280px; /* ~max-w-screen-xl */
   margin-left: auto; margin-right: auto; /* mx-auto */
@@ -92,17 +81,9 @@ a:hover {
   backdrop-filter: saturate(120%) blur(2px);
 }
 
-/* ================================
-   Tipografia de artigos (.prose)
-   - Polimento de headings, links
-   - Citações, tabelas, imagens
-   - Blocos de código
-================================ */
 .prose {
-  /* comportamento de âncora */
   scroll-margin-top: 96px;
 
-  /* paleta básica */
   --tw-prose-body: #374151;     /* neutral-700 */
   --tw-prose-headings: #111827; /* neutral-900 */
   --tw-prose-links: #1d4ed8;    /* blue-700 */
@@ -144,7 +125,6 @@ a:hover {
 }
 .prose li { margin-top: 0.25rem; margin-bottom: 0.25rem; }
 
-/* Citações */
 .prose blockquote {
   border-left: 4px solid #d1d5db; padding-left: 1rem;
   color: #374151; font-style: italic;
@@ -153,21 +133,17 @@ a:hover {
   padding-top: .5rem; padding-bottom: .5rem;
 }
 
-/* Separador */
 .prose hr { margin: 2rem 0; border: 0; border-top: 1px solid #e5e7eb; }
 
-/* Âncoras nos headings (quando presentes) */
 .prose .heading-anchor {
   opacity: 0; margin-left: .25rem; text-decoration: none; font-weight: normal;
 }
 .prose h2:hover .heading-anchor, .prose h3:hover .heading-anchor { opacity: 0.8; }
 
-/* KaTeX (se usar, importe o CSS no layout.tsx) */
 .prose .katex-display { margin: 1.25rem 0; }
 .prose .katex { font-size: 1.02em; }
 .prose .katex .mspace { margin-right: .1em; }
 
-/* Tabelas bonitas (sem depender de plugins) */
 .prose table {
   width: 100%;
   border-collapse: separate;
@@ -185,13 +161,11 @@ a:hover {
 }
 .prose tr:last-child td { border-bottom: 0; }
 
-/* Imagens */
 .prose img {
   border: 1px solid #e5e7eb;
   border-radius: 0.75rem;
 }
 
-/* Blocos de código */
 .prose pre {
   position: relative;
   border: 1px solid #e5e7eb;
@@ -213,19 +187,14 @@ a:hover {
   padding: 0;
 }
 
-/* Utilidades globais */
 h1, h2, h3, h4 { text-wrap: balance; }
 .article-list p { line-height: 1.75; }
 
-/* Callouts simples (usáveis como HTML nos .md) */
 .callout { margin: 1.5rem 0; border-radius: 0.75rem; border: 1px solid; padding: 1rem; }
 .callout.info    { border-color: #bfdbfe; background: #eff6ff; color: #1e3a8a; }
 .callout.warn    { border-color: #fde68a; background: #fffbeb; color: #92400e; }
 .callout.success { border-color: #a7f3d0; background: #ecfdf5; color: #065f46; }
 
-/* ================================
-   Responsividade
-================================ */
 @media (max-width: 640px) {
   .site-nav .inner {
     flex-wrap: wrap; gap: 10px; padding-top: 8px; padding-bottom: 6px;
@@ -246,7 +215,6 @@ h1, h2, h3, h4 { text-wrap: balance; }
 }
 .h-serif { font-family: ui-serif, Georgia, "Times New Roman", Times, serif; }
 
-/* === Melhorias de responsividade nos blocos de código da .prose === */
 .prose pre {
   overflow-x: auto;
   white-space: pre-wrap;
@@ -256,7 +224,6 @@ h1, h2, h3, h4 { text-wrap: balance; }
   background-color: rgb(17 24 39 / 0.9); /* neutro escuro (igual prose-pre padrão) */
 }
 
-/* garante que o botão "Copiar" da ArticleContent continue clicável */
 .prose pre button[data-copy="btn"] {
   position: absolute;
   top: 0.5rem;
