@@ -36,6 +36,24 @@ jsonLd:
   "keywords": "Filosofia Pessimista, Schopenhauer, Nietzsche, Desmotivação, Neurociência, Burnout, Tédio Existencial"
 ---
 
+<figure class="my-8">
+  <img
+    src="/images/officespace.jpg"
+    alt="Representação simbólica da alienação e exaustão em um ambiente desmotivador"
+    class="rounded-2xl shadow-md mx-auto"
+    width="800"
+    loading="lazy"
+    decoding="async"
+  />
+  <figcaption class="text-center text-sm italic text-neutral-600 mt-3">
+    “Em <strong>Office Space</strong> (1999), Mike Judge revela a tragédia silenciosa do homem moderno: 
+    o profissional que, cercado por computadores e planilhas, vê sua alma lentamente dissolver-se 
+    no tédio corporativo. Um retrato irônico, mas devastador, daquilo que este ensaio descreve — 
+    a erosão do espírito quando o trabalho deixa de ser criação e passa a ser rotina. 
+    Assista após a leitura, e perceba como a comédia pode ser o espelho mais cruel do desespero.”
+  </figcaption>
+</figure>
+
 ## I. Introdução
 
 O trabalho para nós, pode ser mais que um meio de sobrevivência: é o espaço onde se manifesta o sentido da vida e existência, a vontade de potência e o desejo de afirmação intelectual, onde nós passamos grande e maior parte de nossos dias e horas.
