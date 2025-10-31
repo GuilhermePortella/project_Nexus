@@ -123,3 +123,15 @@ Em termos neurobiológicos, isso se traduz na subativação dos circuitos dopami
 Claro estamos falando de pessoas altamente qualificadas, não estamos falando, exclusivamente, de pessoas com alto nível acadêmico ou o profissional “canivete suiço” mas pessoas que são movidas por desafios, não baseados apenas em salários, benefícios ou recompensas extrínsecas, pessoas que tem a necessidade do aprendizado constante que a estabilidade sem o desafio perde o sentido e muitas vezes eles se colocam em situações de desvantagem para ser mais desafiadas e em ambientes altamente desafiadores que promovem um aprendizado constante, para essas pessoas o principal benefício é a satisfação intelectual, sensação de superação ao resolver um desafio pela primeira vez. A ausência desses fatores internos faz com que as recompensas externas percam seu significado.
 
 Hierarquia de necessidades: Embora a segurança e a estabilidade sejam necessidades básicas, a necessidade de auto-realização, crescimento pessoal se torna mais importante para esses indivíduos. Um ambiente que não permite o desenvolvimento dessas necessidades pode ser tão prejudicial quanto um que não satisfaça as necessidades básicas.
+
+## IV. Dimensão Profissional e Psicológica
+
+### IV. I Desalinhamento entre perfil e ambiente
+
+Indivíduos movidos por complexidade e desafios, autonomia e aprendizado contínuo, normalmente perfis de engenheiros, cientistas, arquitetos de sistemas e programadores, precisam de: 
+
+1 - feedbacks estruturais
+2 - problemas abertos, e
+3 - liberdade metodológica.
+Ambientes com baixa variabilidade de tarefas e ou alta burocracia, impõe o que a psicologia poderia chamar de desengajamento cognitivo, uma forma de um desligamento emocional do próprio trabalho.  
+Isso consequentemente leva ao fenômeno quiet quitting ou desistência silenciosa e em estágios avançados apatia profissional patológica.
