@@ -90,7 +90,7 @@ Esse estado Nietzsche chamaria, talvez, de decadência: quando o instinto de cre
 
 ##  III.  Dimensão Médica e Neuropsicológica
 
-## III. I Estresse crônico e disfunções neuroendócrinas
+### III. I Estresse crônico e disfunções neuroendócrinas
 Pessoas em ambientes desmotivadores podem sofrer a hiperativação do eixo hipotálamo-hipófise-adrenal (HHA), que significa estar em um estado onde existe uma resposta excessiva ao estresse, resultando em níveis elevados de cortisol. Esse estado crônico pode também estar ligado ao transtorno de ansiedade generalizada ou TAG.
 Ambiente de trabalho desmotivador e estressantes como climas pesados, sensação de monitoramento excessivo e outros tipos de abusos disfarçados, quando constantes, podem ser percebidos como uma ameaça pelo corpo, desencadeando diversos problemas e essa resposta de estresse.
 A falta de controle sobre o trabalho e a percepção de inutilidade podem gerar um aumento na produção do cortisol, reduzindo a dopamina, neurotransmissor central na motivação e aprendizado, esse descontrole e níveis irregulares de hormônios podem levar a casos mais graves como burnout.
@@ -108,3 +108,18 @@ Estudos longitudinais (Karasek, 1979; Siegrist, 1996) sobre o modelo job strain,
 4 - Baixa exigência (Low strain): Baixa demanda e alto controle.
 
 A afirmação em questão foca no quadrante de "trabalho passivo" (baixa demanda e baixo controle). Embora a alta exigência seja o cenário mais estudado é classicamente associado ao estresse, a baixa demanda combinada com baixo controle também se mostra perigosa. Nessas condições, o trabalhador sente-se pouco desafiado, entediado e com pouca margem de decisão, o que pode levar a um aprendizado estagnado, pouca motivação e, em longo prazo, desgaste psicológico. Estudos longitudinais confirmaram que essa situação passiva é um fator de risco para problemas de saúde mental, incluindo depressão.
+
+### III. II O tédio como patologia cognitiva
+
+O tédio crônico (ou boredom proneness) correlaciona-se com:
+
+1 - maior probabilidade de transtornos ansiosos;
+2 - síndrome de despersonalização;
+3 - redução do tempo de reação e criatividade.
+
+Uma pessoa técnica e extremamente produtiva acostumada à resolução de problemas complexos, sofre uma espécie de atrofia sináptica funcional quando privado de desafios e em um ambiente desmotivador é difícil. Isso pode também ser conhecido como boreout.
+Em termos neurobiológicos, isso se traduz na subativação dos circuitos dopaminérgicos mesolímbicos  (área tegmental ventral → núcleo accumbens), levando à sensação de “vida em câmera lenta”.
+
+Claro estamos falando de pessoas altamente qualificadas, não estamos falando, exclusivamente, de pessoas com alto nível acadêmico ou o profissional “canivete suiço” mas pessoas que são movidas por desafios, não baseados apenas em salários, benefícios ou recompensas extrínsecas, pessoas que tem a necessidade do aprendizado constante que a estabilidade sem o desafio perde o sentido e muitas vezes eles se colocam em situações de desvantagem para ser mais desafiadas e em ambientes altamente desafiadores que promovem um aprendizado constante, para essas pessoas o principal benefício é a satisfação intelectual, sensação de superação ao resolver um desafio pela primeira vez. A ausência desses fatores internos faz com que as recompensas externas percam seu significado.
+
+Hierarquia de necessidades: Embora a segurança e a estabilidade sejam necessidades básicas, a necessidade de auto-realização, crescimento pessoal se torna mais importante para esses indivíduos. Um ambiente que não permite o desenvolvimento dessas necessidades pode ser tão prejudicial quanto um que não satisfaça as necessidades básicas.
