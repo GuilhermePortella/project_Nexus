@@ -64,7 +64,7 @@ Ambos antecipam o que hoje a neuropsiquiatria e a psicologia organizacional conf
 
 ## II. Perspectiva Filosófica
 
-## II. I Schopenhauer: a frustração da vontade
+### II. I Schopenhauer: a frustração da vontade
 
 Para Schopenhauer, o homem é movido por uma força cega e incessante, a Vontade (Wille). Essa energia metafísica busca incessantemente por expressão, realização e superação.
 Quando o ambiente em que o sujeito desempenha seu trabalho impede a expressão da Vontade, ao eliminar o desafio, a autonomia e o sentimento de criação, sendo um ambiente pouco desafiador ou mesmo há desestimulando de forma ativa, o indivíduo entra em um estado de sofrimento ontológico. 
@@ -74,7 +74,7 @@ Quando o ambiente em que o sujeito desempenha seu trabalho impede a expressão d
 Em contextos desmotivadores, o tédio profissional acaba se tornando uma forma de aniquilação existencial: o sujeito sente-se vivo, mas perde a direção.
 Esse tédio não se parece com laser, mas um vazio perceptivo que ao poucos fragmenta o senso de identidade, levando ao estado de apatia, cinismo e alienação criativa e motivacional. 
 
-## II. II Nietzsche: a vontade de potência e a decadência do espírito
+### II. II Nietzsche: a vontade de potência e a decadência do espírito
 
 Nietzsche, em uma direção diferente, concebe o homem como um ser em devir, movido não pela fuga da dor, mas pela vontade de potência (Wille zur Macht).
 Esse ambiente desmotivador é, para o espírito nobre, uma prisão invisível. Ele o obriga a renunciar à superação, tornando-o reativo em vez de criativo, o que se torna torturante para mentes abissais.
@@ -91,12 +91,20 @@ Esse estado Nietzsche chamaria, talvez, de decadência: quando o instinto de cre
 ##  III.  Dimensão Médica e Neuropsicológica
 
 ## III. I Estresse crônico e disfunções neuroendócrinas
-Ambientes desmotivadores induzem hiperativação do eixo hipotálamo-hipófise-adrenal (HHA), mesmo sem estímulos à ameaça física.
-A falta de controle sobre o próprio trabalho e a percepção de inutilidade geram cortisol elevado, reduzindo a dopamina — neurotransmissor central na motivação e aprendizado.
+Pessoas em ambientes desmotivadores podem sofrer a hiperativação do eixo hipotálamo-hipófise-adrenal (HHA), que significa estar em um estado onde existe uma resposta excessiva ao estresse, resultando em níveis elevados de cortisol. Esse estado crônico pode também estar ligado ao transtorno de ansiedade generalizada ou TAG.
+Ambiente de trabalho desmotivador e estressantes como climas pesados, sensação de monitoramento excessivo e outros tipos de abusos disfarçados, quando constantes, podem ser percebidos como uma ameaça pelo corpo, desencadeando diversos problemas e essa resposta de estresse.
+A falta de controle sobre o trabalho e a percepção de inutilidade podem gerar um aumento na produção do cortisol, reduzindo a dopamina, neurotransmissor central na motivação e aprendizado, esse descontrole e níveis irregulares de hormônios podem levar a casos mais graves como burnout.
 Consequências fisiológicas observadas:
+Hipofrontalidade funcional: redução da atividade no córtex pré-frontal (decisão e foco);
+Atrofia do hipocampo: prejuízo na consolidação de memória e aprendizagem;
+Dopaminérgica diminuída: perda de prazer e engajamento.
 
-- Hipofrontalidade funcional: redução da atividade no córtex pré-frontal (decisão e foco);
-- Atrofia do hipocampo: prejuízo na consolidação de memória e aprendizagem;
-- Dopaminergia diminuída: perda de prazer e engajamento.
 
-Estudos longitudinais (Karasek, 1979; Siegrist, 1996) sobre o modelo job strain confirmam: baixa demanda cognitiva + baixo controle → risco aumentado de depressão e burnout.
+Estudos longitudinais (Karasek, 1979; Siegrist, 1996) sobre o modelo job strain, propõe que a tensão no trabalho (job strain) é resultado da combinação entre as demandas psicológicas do trabalho e o controle que o trabalhador tem sobre ele. Ele classificou o ambiente de trabalho em quatro quadrantes: 
+
+1 - Alta exigência (High strain): Alta demanda e baixo controle.
+2 - Trabalho ativo (Active): Alta demanda e alto controle.
+3 - Trabalho passivo (Passive): Baixa demanda e baixo controle.
+4 - Baixa exigência (Low strain): Baixa demanda e alto controle.
+
+A afirmação em questão foca no quadrante de "trabalho passivo" (baixa demanda e baixo controle). Embora a alta exigência seja o cenário mais estudado é classicamente associado ao estresse, a baixa demanda combinada com baixo controle também se mostra perigosa. Nessas condições, o trabalhador sente-se pouco desafiado, entediado e com pouca margem de decisão, o que pode levar a um aprendizado estagnado, pouca motivação e, em longo prazo, desgaste psicológico. Estudos longitudinais confirmaram que essa situação passiva é um fator de risco para problemas de saúde mental, incluindo depressão.
