@@ -1,4 +1,3 @@
-// src/app/articles/page.tsx
 import Link from "next/link";
 import ArticlesSearch from "./ArticlesSearch";
 import { getAllArticles, buildSearchIndex, type ArticleIndexItem } from "@/lib/articles";
@@ -7,14 +6,6 @@ export const metadata = {
   title: "Artigos | Guilherme Portella",
   description: "Artigos sobre arquitetura, Java, DDD e práticas modernas em engenharia de software.",
 };
-
-/* ==========================
-   Helpers de data (server)
-   - Trata 'YYYY-MM-DD' como date-only (sem fuso)
-   - Mantém consistência com a página [slug]
-========================== */
-
-/** Faz o parsing de publishedAt/publishedDate preservando semântica de data sem fuso. */
 function parseFrontmatterDate(raw?: string):
   | { date: Date; isDateOnly: true; attr: string }
   | { date: Date; isDateOnly: false; attr: string }
@@ -24,7 +15,6 @@ function parseFrontmatterDate(raw?: string):
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
   if (m) {
     const y = +m[1], mo = +m[2] - 1, d = +m[3];
-    // Date em UTC para não deslocar na renderização
     const date = new Date(Date.UTC(y, mo, d));
     return { date, isDateOnly: true, attr: `${m[1]}-${m[2]}-${m[3]}` };
   }
@@ -35,7 +25,6 @@ function parseFrontmatterDate(raw?: string):
   return { date, isDateOnly: false, attr: date.toISOString() };
 }
 
-/** Formata um rótulo de data; força UTC para date-only. */
 function safeDateLabel(d: Date | null, forceUTC = false): string | null {
   if (!d) return null;
   try {
@@ -50,7 +39,6 @@ function safeDateLabel(d: Date | null, forceUTC = false): string | null {
   }
 }
 
-/** Título do mês com capitalização; força UTC quando date-only. */
 function monthTitle(date: Date, forceUTC = false): string {
   const m = date.toLocaleString("pt-BR", { month: "long", ...(forceUTC ? { timeZone: "UTC" } : {}) });
   return `${m.charAt(0).toUpperCase()}${m.slice(1)}`;
@@ -58,7 +46,6 @@ function monthTitle(date: Date, forceUTC = false): string {
 
 type GroupKey = { year: number; month: number }; // month 0..11
 
-/** Agrupa por mês de forma imune a fuso: usa UTC quando a fonte é date-only. */
 function groupByMonth(items: ArticleIndexItem[]) {
   const groups = new Map<string, { key: GroupKey; label: string; id: string; items: ArticleIndexItem[] }>();
 
@@ -82,17 +69,13 @@ function groupByMonth(items: ArticleIndexItem[]) {
   );
 }
 
-/* ==========================
-   Página
-========================== */
 export default async function ArticlesPage() {
   const articles = await getAllArticles();
   const grouped = groupByMonth(articles);
-  const searchIndex = await buildSearchIndex(); // título, summary e conteúdo
+  const searchIndex = await buildSearchIndex();
 
   return (
     <main className="mx-auto max-w-5xl p-6 space-y-8">
-      {/* Heading */}
       <header className="space-y-1 text-center">
         <h1 className="text-4xl font-bold h-serif">Artigos</h1>
         <p className="text-neutral-600">
@@ -100,10 +83,8 @@ export default async function ArticlesPage() {
         </p>
       </header>
 
-      {/* Busca (client) */}
       <ArticlesSearch index={searchIndex} />
 
-      {/* Índice de meses */}
       {grouped.length > 0 && (
         <nav className="text-sm text-neutral-600">
           <span className="mr-2">Meses:</span>
@@ -119,7 +100,6 @@ export default async function ArticlesPage() {
         </nav>
       )}
 
-      {/* Lista por mês com visual “acadêmico” (barra lateral) */}
       {grouped.length === 0 ? (
         <p className="text-neutral-500">Nenhum artigo publicado ainda.</p>
       ) : (
@@ -142,14 +122,11 @@ export default async function ArticlesPage() {
                         className="group block border-l-4 border-neutral-300 bg-white p-4 transition hover:border-neutral-900"
                       >
                         <article className="space-y-1.5">
-                          {/* Título serifado com sublinhado no hover */}
                           <h3 className="text-[1.125rem] font-semibold text-neutral-900 font-[ui-serif,Georgia,Times,serif]">
                             <span className="underline decoration-transparent group-hover:decoration-neutral-900">
                               {article.frontmatter.title}
                             </span>
                           </h3>
-
-                          {/* Metadados discretos */}
                           <div className="text-xs text-neutral-600">
                             {dateLabel ?? "Sem data"}
                             {article.frontmatter.tags?.length ? (
@@ -161,15 +138,11 @@ export default async function ArticlesPage() {
                               </>
                             ) : null}
                           </div>
-
-                          {/* Resumo enxuto */}
                           {article.frontmatter.summary && (
                             <p className="text-sm text-neutral-700">
                               {article.frontmatter.summary}
                             </p>
                           )}
-
-                          {/* CTA textual discreto */}
                           <div className="pt-0.5">
                             <span className="text-sm text-blue-700 underline underline-offset-2 group-hover:text-blue-800">
                               Ler artigo →

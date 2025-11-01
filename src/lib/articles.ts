@@ -2,13 +2,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
 import { markdownToHtml } from "./markdown";
-
-// Diretório dos artigos Markdown (.md)
 const ARTICLES_DIR = path.join(process.cwd(), "content/articles");
 
-/* ==========================
-   Tipos
-========================== */
 export type ArticleFrontmatter = {
   title: string;
   summary?: string;
@@ -208,7 +203,6 @@ function parseDateForSort(raw?: string): number {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
   if (m) {
     const y = +m[1], mo = +m[2] - 1, d = +m[3];
-    // chave de ordenação imune a fuso
     return Date.UTC(y, mo, d);
   }
   const t = Date.parse(raw);
