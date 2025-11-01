@@ -135,3 +135,11 @@ Indivíduos movidos por complexidade e desafios, autonomia e aprendizado contín
 3 - liberdade metodológica.
 Ambientes com baixa variabilidade de tarefas e ou alta burocracia, impõe o que a psicologia poderia chamar de desengajamento cognitivo, uma forma de um desligamento emocional do próprio trabalho.  
 Isso consequentemente leva ao fenômeno quiet quitting ou desistência silenciosa e em estágios avançados apatia profissional patológica.
+
+### IV. II O Colapso do significado 
+
+A psicologia existencial de Viktor Frankl, Rollo May, Irvin Yalom, mostra que o ser humano suporta dor mas nunca o vazio de sentido, para eles a busca por um sentido na vida e a força motivacional primária na vida de um homem.
+Quando o trabalho deixa de representar algo e passa a ser mero comprimento de protocolos, a pessoa experimenta uma espécie de crise de autenticidade, o conflito entre quem é e o que faz.
+
+
+>“A ausência de sentido é a mais profunda das neuroses.” — Viktor Frankl, Em Busca de Sentido
