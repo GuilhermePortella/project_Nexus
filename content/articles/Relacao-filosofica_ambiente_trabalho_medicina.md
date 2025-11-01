@@ -72,7 +72,7 @@ Quando o ambiente em que o sujeito desempenha seu trabalho impede a expressão d
 >“A vida oscila, como um pêndulo, entre o tédio e a dor.” — Schopenhauer, Parerga e Paralipomena
 
 Em contextos desmotivadores, o tédio profissional acaba se tornando uma forma de aniquilação existencial: o sujeito sente-se vivo, mas perde a direção.
-Esse tédio não se parece com laser, mas um vazio perceptivo que ao poucos fragmenta o senso de identidade, levando ao estado de apatia, cinismo e alienação criativa e motivacional. 
+Esse tédio não se parece com lazer, mas um vazio perceptivo que ao poucos fragmenta o senso de identidade, levando ao estado de apatia, cinismo e alienação criativa e motivacional. 
 
 ### II. II Nietzsche: a vontade de potência e a decadência do espírito
 
@@ -120,7 +120,7 @@ O tédio crônico (ou boredom proneness) correlaciona-se com:
 Uma pessoa técnica e extremamente produtiva acostumada à resolução de problemas complexos, sofre uma espécie de atrofia sináptica funcional quando privado de desafios e em um ambiente desmotivador é difícil. Isso pode também ser conhecido como boreout.
 Em termos neurobiológicos, isso se traduz na subativação dos circuitos dopaminérgicos mesolímbicos  (área tegmental ventral → núcleo accumbens), levando à sensação de “vida em câmera lenta”.
 
-Claro estamos falando de pessoas altamente qualificadas, não estamos falando, exclusivamente, de pessoas com alto nível acadêmico ou o profissional “canivete suiço” mas pessoas que são movidas por desafios, não baseados apenas em salários, benefícios ou recompensas extrínsecas, pessoas que tem a necessidade do aprendizado constante que a estabilidade sem o desafio perde o sentido e muitas vezes eles se colocam em situações de desvantagem para ser mais desafiadas e em ambientes altamente desafiadores que promovem um aprendizado constante, para essas pessoas o principal benefício é a satisfação intelectual, sensação de superação ao resolver um desafio pela primeira vez. A ausência desses fatores internos faz com que as recompensas externas percam seu significado.
+Claro estamos falando de pessoas altamente qualificadas, não estamos falando, exclusivamente, de pessoas com alto nível acadêmico ou o profissional "canivete suíço" mas pessoas que são movidas por desafios, não baseados apenas em salários, benefícios ou recompensas extrínsecas, pessoas que tem a necessidade do aprendizado constante que a estabilidade sem o desafio perde o sentido e muitas vezes eles se colocam em situações de desvantagem para ser mais desafiadas e em ambientes altamente desafiadores que promovem um aprendizado constante, para essas pessoas o principal benefício é a satisfação intelectual, sensação de superação ao resolver um desafio pela primeira vez. A ausência desses fatores internos faz com que as recompensas externas percam seu significado.
 
 Hierarquia de necessidades: Embora a segurança e a estabilidade sejam necessidades básicas, a necessidade de auto-realização, crescimento pessoal se torna mais importante para esses indivíduos. Um ambiente que não permite o desenvolvimento dessas necessidades pode ser tão prejudicial quanto um que não satisfaça as necessidades básicas.
 
@@ -160,3 +160,39 @@ De um ponto de vista médico, um círculo vicioso se cria:
 4 - Baixo desempenho e erro técnico → reforça culpa e sentimento de inadequação.
 
 Esse ciclo é o equivalente biológico do eterno retorno do niilismo: o sujeito repete o mesmo dia, sem crescimento, sem propósito, sem transcendência.
+
+## VI. Estratégias de Superação: Uma Perspectiva Filosófico-Pragmática
+
+### VI. I Nietzsche: Transvalorar o sofrimento
+
+Nietzsche propõe não fugir do sofrimento, mas usá-lo como matéria-prima de transvaloração.
+O profissional que reconhece a esterilidade do ambiente pode usar o desconforto como gatilho para reconstruir seu sentido de potência — seja por projetos paralelos, pesquisa, ou reinvenção de papéis.
+
+### VI. II  Frankl: sentido mesmo no absurdo
+
+Frankl, sobrevivente de Auschwitz, defendia que o homem pode encontrar sentido mesmo em contextos sem esperança, desde que consiga redefinir a finalidade da dor.
+No contexto técnico, isso implica deslocar o foco de “onde estou” para “como posso crescer apesar disso”.
+
+### VI. III  Neurociência: reconstrução da plasticidade
+
+A exposição deliberada a novos desafios cognitivos (aprendizado técnico, projetos pessoais, estudos filosóficos) reativa os circuitos dopaminérgicos e restaura o senso de curiosidade.
+A neuroplasticidade é, em última instância, a expressão biológica da vontade de potência.
+
+## VII. Conclusão
+
+O ambiente de trabalho desmotivador é mais que um problema de gestão, na organização ou de demandas, ele pode se tornar um problema fisiológico tal como é um problema filosófico.
+Ele confronta o indivíduo com a própria finitude do sentido e a impotência da vontade diante da repetição e a total falta de propósito, como uma punição de sentença de morte silenciosa.
+Para o espírito criador altamente produtivo e motivado pelo aprendizado, que vive da complexidade e da criação, evolução e sentimento de pertencimento e aprendizagem, a falta de desafio equivale a uma morte lenta da mente e a permanência em um lugar como esse e como uma autotortura e até mesmo uma suicidio assistido do individuo.
+E, como diria Nietzsche, “o homem que perdeu o porquê não suporta o como” Crepúsculo dos Ídolos (Götzen-Dämmerung.
+
+## Referências
+
+- **Schopenhauer, A.** *O Mundo como Vontade e Representação*. Leipzig, 1818.  
+- **Nietzsche, F.** *Genealogia da Moral*; *Crepúsculo dos Ídolos*; *Além do Bem e do Mal*.  
+- **Frankl, V.** *Em Busca de Sentido*.  
+- **Karasek, R.** (1979). *Job Demands, Job Decision Latitude, and Mental Strain*. *Administrative Science Quarterly*.  
+- **Siegrist, J.** (1996). *Effort-Reward Imbalance Model*. *Journal of Occupational Health Psychology*.  
+- **Deci, E., & Ryan, R.** (1985). *Intrinsic Motivation and Self-Determination in Human Behavior*. Springer.  
+- **Sapolsky, R.** (2004). *Why Zebras Don’t Get Ulcers*. Holt Paperbacks.  
+- **May, R.** (1958). *Existence: A New Dimension in Psychiatry and Psychology*.  
+- **Yalom, I.** (1980). *Existential Psychotherapy*.  
