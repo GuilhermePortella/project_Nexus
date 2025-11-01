@@ -183,7 +183,7 @@ A neuroplasticidade é, em última instância, a expressão biológica da vontad
 O ambiente de trabalho desmotivador é mais que um problema de gestão, na organização ou de demandas, ele pode se tornar um problema fisiológico tal como é um problema filosófico.
 Ele confronta o indivíduo com a própria finitude do sentido e a impotência da vontade diante da repetição e a total falta de propósito, como uma punição de sentença de morte silenciosa.
 Para o espírito criador altamente produtivo e motivado pelo aprendizado, que vive da complexidade e da criação, evolução e sentimento de pertencimento e aprendizagem, a falta de desafio equivale a uma morte lenta da mente e a permanência em um lugar como esse e como uma autotortura e até mesmo uma suicidio assistido do individuo.
-E, como diria Nietzsche, “o homem que perdeu o porquê não suporta o como” Crepúsculo dos Ídolos (Götzen-Dämmerung.
+E, como diria Nietzsche, “o homem que perdeu o porquê não suporta o como” Crepúsculo dos Ídolos (Götzen-Dämmerung).
 
 ## Referências
 
