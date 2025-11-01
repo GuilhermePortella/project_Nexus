@@ -121,7 +121,7 @@ export default async function Home() {
       question: "Como migrar um legado para Arquitetura Hexagonal sem parar o mundo?",
       answer:
         "Desacople casos de uso do transporte/persistência. Crie portas/adaptadores finos e migre periféricos em torno de um core estável.",
-      links: [{ href: "/articles/sua-slug-hexagonal/", label: "Guia prático" }],
+      links: [{ href: "/articles/migracao-legado", label: "Guia prático" }],
     },
     {
       id: "ddd",

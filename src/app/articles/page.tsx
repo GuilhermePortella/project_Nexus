@@ -8,34 +8,83 @@ export const metadata = {
   description: "Artigos sobre arquitetura, Java, DDD e práticas modernas em engenharia de software.",
 };
 
-// Helpers de data (server)
-function safeDate(d?: string): Date | null {
-  if (!d) return null;
-  const t = Date.parse(d);
-  return Number.isNaN(t) ? null : new Date(d);
+/* ==========================
+   Helpers de data (server)
+   - Trata 'YYYY-MM-DD' como date-only (sem fuso)
+   - Mantém consistência com a página [slug]
+========================== */
+
+/** Faz o parsing de publishedAt/publishedDate preservando semântica de data sem fuso. */
+function parseFrontmatterDate(raw?: string):
+  | { date: Date; isDateOnly: true; attr: string }
+  | { date: Date; isDateOnly: false; attr: string }
+  | null {
+  if (!raw) return null;
+
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
+  if (m) {
+    const y = +m[1], mo = +m[2] - 1, d = +m[3];
+    // Date em UTC para não deslocar na renderização
+    const date = new Date(Date.UTC(y, mo, d));
+    return { date, isDateOnly: true, attr: `${m[1]}-${m[2]}-${m[3]}` };
+  }
+
+  const t = Date.parse(raw);
+  if (Number.isNaN(t)) return null;
+  const date = new Date(t);
+  return { date, isDateOnly: false, attr: date.toISOString() };
 }
-function monthTitle(date: Date): string {
-  const m = date.toLocaleString("pt-BR", { month: "long" });
+
+/** Formata um rótulo de data; força UTC para date-only. */
+function safeDateLabel(d: Date | null, forceUTC = false): string | null {
+  if (!d) return null;
+  try {
+    return d.toLocaleDateString("pt-BR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      ...(forceUTC ? { timeZone: "UTC" } : {}),
+    });
+  } catch {
+    return null;
+  }
+}
+
+/** Título do mês com capitalização; força UTC quando date-only. */
+function monthTitle(date: Date, forceUTC = false): string {
+  const m = date.toLocaleString("pt-BR", { month: "long", ...(forceUTC ? { timeZone: "UTC" } : {}) });
   return `${m.charAt(0).toUpperCase()}${m.slice(1)}`;
 }
+
 type GroupKey = { year: number; month: number }; // month 0..11
+
+/** Agrupa por mês de forma imune a fuso: usa UTC quando a fonte é date-only. */
 function groupByMonth(items: ArticleIndexItem[]) {
   const groups = new Map<string, { key: GroupKey; label: string; id: string; items: ArticleIndexItem[] }>();
+
   for (const a of items) {
-    const d = safeDate(a.frontmatter.publishedAt) ?? new Date(0);
-    const year = d.getFullYear();
-    const month = d.getMonth();
+    const parsed = parseFrontmatterDate(a.frontmatter.publishedAt);
+    const date = parsed?.date ?? new Date(0);
+
+    const year = parsed?.isDateOnly ? date.getUTCFullYear() : date.getFullYear();
+    const month = parsed?.isDateOnly ? date.getUTCMonth() : date.getMonth();
+
     const id = `${year}-${String(month + 1).padStart(2, "0")}`;
-    const label = `${year} - ${monthTitle(d)}`;
+    const label = `${year} - ${monthTitle(date, !!parsed?.isDateOnly)}`;
+
     const g = groups.get(id) ?? { key: { year, month }, label, id, items: [] };
     g.items.push(a);
     groups.set(id, g);
   }
+
   return Array.from(groups.values()).sort((a, b) =>
     a.key.year === b.key.year ? b.key.month - a.key.month : b.key.year - a.key.year
   );
 }
 
+/* ==========================
+   Página
+========================== */
 export default async function ArticlesPage() {
   const articles = await getAllArticles();
   const grouped = groupByMonth(articles);
@@ -83,10 +132,8 @@ export default async function ArticlesPage() {
 
               <ul className="space-y-3">
                 {g.items.map((article) => {
-                  const d = safeDate(article.frontmatter.publishedAt);
-                  const dateLabel = d
-                    ? d.toLocaleDateString("pt-BR", { year: "numeric", month: "long", day: "numeric" })
-                    : null;
+                  const parsed = parseFrontmatterDate(article.frontmatter.publishedAt);
+                  const dateLabel = parsed ? safeDateLabel(parsed.date, parsed.isDateOnly) : null;
 
                   return (
                     <li key={article.slug}>
