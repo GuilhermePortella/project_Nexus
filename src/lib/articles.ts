@@ -2,21 +2,16 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
 import { markdownToHtml } from "./markdown";
-
-// Diretório dos artigos Markdown (.md)
 const ARTICLES_DIR = path.join(process.cwd(), "content/articles");
 
-/* ==========================
-   Tipos
-========================== */
 export type ArticleFrontmatter = {
   title: string;
   summary?: string;
   author?: string;
-  publishedAt?: string;   
-  publishedDate?: string; 
+  publishedAt?: string;
+  publishedDate?: string;
   tags?: string[];
-  slug?: string;          
+  slug?: string;
 };
 
 export type ArticleSearchDoc = {
@@ -24,18 +19,18 @@ export type ArticleSearchDoc = {
   title: string;
   summary?: string;
   publishedAt?: string;
-  content: string; 
+  content: string;
 };
 
 export type ArticleIndexItem = {
-  slug: string;                   
+  slug: string;
   frontmatter: ArticleFrontmatter;
 };
 
 export type ArticleFull = {
   slug: string;
-  html: string;                   
-  frontmatter: ArticleFrontmatter; 
+  html: string;
+  frontmatter: ArticleFrontmatter;
 };
 
 type NodeErr = NodeJS.ErrnoException & { code?: string };
@@ -48,7 +43,7 @@ async function safeReaddir(dir: string): Promise<string[]> {
   try {
     return await fs.readdir(dir);
   } catch (e) {
-    if (isNodeErr(e) && e.code === "ENOENT") return []; 
+    if (isNodeErr(e) && e.code === "ENOENT") return [];
     throw e;
   }
 }
@@ -120,11 +115,7 @@ export async function getAllArticles(limit?: number): Promise<ArticleIndexItem[]
   );
 
   const filtered = (items.filter(Boolean) as ArticleIndexItem[])
-    .sort((a, b) => {
-      const aTime = a.frontmatter.publishedAt ? new Date(a.frontmatter.publishedAt).getTime() : 0;
-      const bTime = b.frontmatter.publishedAt ? new Date(b.frontmatter.publishedAt).getTime() : 0;
-      return bTime - aTime;
-    });
+    .sort((a, b) => parseDateForSort(b.frontmatter.publishedAt) - parseDateForSort(a.frontmatter.publishedAt));
 
   return limit ? filtered.slice(0, limit) : filtered;
 }
@@ -203,12 +194,17 @@ export async function buildSearchIndex(): Promise<ArticleSearchDoc[]> {
       content: stripMarkdown(content),
     });
   }
-  docs.sort((a, b) => {
-    const at = a.publishedAt ? Date.parse(a.publishedAt) : 0;
-    const bt = b.publishedAt ? Date.parse(b.publishedAt) : 0;
-    return bt - at;
-  });
-
+  docs.sort((a, b) => parseDateForSort(b.publishedAt) - parseDateForSort(a.publishedAt));
   return docs;
 }
 
+function parseDateForSort(raw?: string): number {
+  if (!raw) return 0;
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
+  if (m) {
+    const y = +m[1], mo = +m[2] - 1, d = +m[3];
+    return Date.UTC(y, mo, d);
+  }
+  const t = Date.parse(raw);
+  return Number.isNaN(t) ? 0 : t;
+}
